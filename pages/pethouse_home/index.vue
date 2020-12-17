@@ -57,7 +57,7 @@
 						break
 					case 1:
 						uni.navigateTo({
-							url: "../pethouse_order_history/index"
+							url: "../pethouse_order_history/index?orderBarNumber=0"
 						})
 						break
 					case 2:

@@ -13,18 +13,18 @@
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.store }}</view>
-										<u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
 								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+									<!--
 									<view class="left">
 										<image :src="item.goodsUrl" mode="aspectFill"></image>
 									</view>
+									-->
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
-										<!--<view class="type">{{ item.type }}</view>-->
+										<!--<view class="type">{{ item.status }}</view>-->
 										<!--<view class="type"> 美容师 {{ item.groomerCount }}/1</view>-->
 										<view class="delivery-time"> 预计结束时间 {{ item.deliveryTime }}</view>
 									</view>
@@ -47,9 +47,11 @@
 								</view>
 								<view class="bottom">
 									<view class="more">
+										<!--
 										<u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon>
+										-->
 									</view>
-									<view class="evaluate btn" @click="CancelOrder(res.id)">取消订单</view>
+									<view class="evaluate btn" @click="CancelNewOrder(res.id)">取消订单</view>
 								</view>
 							</view>
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
@@ -79,42 +81,44 @@
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.store }}</view>
-										<u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item" v-for="item in res.goodsList">
 									<view class="left">
 										<image :src="item.goodsUrl" mode="aspectFill"></image>
 									</view>
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="type">{{ item.type }}</view>
-										<view class="delivery-time">发货时间 {{ item.deliveryTime }}</view>
-									</view>
-									<!-- <view class="right">
-										<view class="price">
-											￥{{ priceInt(item.price) }}
-											<text class="decimal">.{{ priceDecimal(item.price) }}</text>
+										<view class="delivery-time">结束时间 {{ item.deliveryTime }}</view>
+										<text>\n</text>
+										<view class="left">
+											<u-icon name="account-fill" :size="38" color="rgb(23, 112, 255)"></u-icon>
+											<text class=".worker-info">\t人员详情</text>
 										</view>
-										<view class="number">x{{ item.number }}</view>
-									</view> -->
+										<view class="delivery-time">接单时间 {{ item.matchTime }}</view>
+									</view>
 								</view>
 								<view class="total">
-									合计:
-									<text class="total-price">
-										￥{{ res.goodsList[0].price }}
-										<!-- <text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text> -->
+									<text>
+										<text v-if="res.goodsList[0].basic > 0">
+										底薪:\t
+										<text class="total-price" space="ensp">
+										￥{{ res.goodsList[0].basic }}
+										</text>
+										</text>
+										<text v-if="res.goodsList[0].commission > 0">
+										\t提成:\t
+										<text class="total-price">
+											{{ res.goodsList[0].commission }}%
+										</text>
+										</text>
 									</text>
 								</view>
 								<view class="bottom">
-									<view class="more">
-										<u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon>
-									</view>
-									<view class="logistics btn">查看物流</view>
 									<view class="exchange btn">取消美容师</view>
-									<view class="evaluate btn">美容师开始服务</view>
+									<view class="exchange btn" @click="CancelRunningOrder(res.id, res.goodsList[0].matchTime)">取消订单</view>
+									<view class="evaluate btn">确认完成</view>
 								</view>
 							</view>
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
@@ -170,7 +174,7 @@
 									<view class="more">
 										<u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon>
 									</view>
-									<view class="evaluate btn" @click="CancelOrder(res.id)">取消订单</view>
+									<view class="evaluate btn" @click="CancelNewOrder(res.id)">取消订单</view>
 								</view>
 							</view>
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
@@ -270,10 +274,10 @@
 				}
 			};
 		},
-		onLoad() {
-			this.getOrderList(0);
-			this.getOrderList(1);
-			this.getOrderList(2);
+		onLoad: function(option) {
+			this.getOrderList(option.orderBarNumber);
+			//this.getOrderList(1);
+			//this.getOrderList(2);
 		},
 		computed: {
 			// 价格小数
@@ -344,10 +348,11 @@
 								//store: `${this.$store.getters.userInfo.name} - ${this.$store.getters.userInfo.nick_name}`,
 								deal: order.orderStatus[list.status],
 								goodsList: [{
-									goodsUrl: '//img14.360buyimg.com/n7/jfs/t1/60319/15/6105/406802/5d43f68aE9f00db8c/0affb7ac46c345e2.jpg',
+									goodsUrl: '//127.0.0.1:8080/api/v1/images/imagetest',
 									title: this.serviceIdToStr(list.service_items),
-									type: order.orderStatus[list.status],
+									status: order.orderStatus[list.status],
 									deliveryTime: moment(new Date(list.finished_at)).format('YYYY-MM-DD HH:mm'),
+									matchTime: moment(new Date(list.children.match_order.created_at)).format('YYYY-MM-DD HH:mm'),
 									groomerCount: list.children.groomer.id === 0 ? 0 : 1,
 									basic: list.payment.detail.basic,
 									commission: list.payment.detail.commission,
@@ -377,8 +382,8 @@
 				})
 			},
 			
-			// 取消订单
-			CancelOrder(id) {				
+			// 取消未接单订单
+			CancelNewOrder(id) {				
 				uni.request({
 					url: `${api.baseUrl}/api/v1/order/pethouse/cancel/${id}`,
 					method: "DELETE",
@@ -388,7 +393,47 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: "../pethouse_order_history/index"
+							url: "../pethouse_order_history/index?orderBarNumber=0"
+						})
+					}
+				})
+			},
+			
+			// 取消正在进行的订单
+			CancelRunningOrder(id, matchTime) {		
+				var now = moment().valueOf()
+				console.log(now)
+				console.log(moment(matchTime).valueOf())
+				if ((moment(matchTime).valueOf() + 600000) < now){
+					console.log("已超出可取消时间")
+					uni.showModal({
+						title: '提示',
+						content: '这是一个模态弹窗',
+						success: function (res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+							}
+						}
+					})
+					return
+				}
+				uni.request({
+					url: `${api.baseUrl}/api/v1/order/pethouse/cancel/${id}`,
+					method: "DELETE",
+					header: {
+						"content-type": "application/json",
+						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
+					},
+					success: () => {
+						uni.redirectTo({
+							url: "../pethouse_order_history/index?orderBarNumber=1"
+						})
+					},
+					fail: (err) => {
+						uni.redirectTo({
+							url: "../pethouse_order_history/index?orderBarNumber=1"
 						})
 					}
 				})
@@ -511,6 +556,11 @@
 				.delivery-time {
 					color: #e5d001;
 					font-size: 24rpx;
+				}
+				
+				.worker-info {
+					color: rgb(23, 112, 255);
+					font-size: 28rpx;
 				}
 			}
 

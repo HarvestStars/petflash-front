@@ -257,7 +257,7 @@
 					},
 					success: ({data}) => {
 							uni.redirectTo({
-								url: "../pethouse_order_history/index"
+								url: "../pethouse_order_history/index?orderBarNumber=0"
 							})
 					},
 					fail: (error) => {
