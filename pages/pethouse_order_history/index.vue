@@ -17,16 +17,9 @@
 									<view class="right">{{ res.deal }}</view>
 								</view>
 								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
-									<!--
-									<view class="left">
-										<image :src="item.goodsUrl" mode="aspectFill"></image>
-									</view>
-									-->
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
-										<!--<view class="type">{{ item.status }}</view>-->
-										<!--<view class="type"> 美容师 {{ item.groomerCount }}/1</view>-->
-										<view class="delivery-time"> 预计结束时间 {{ item.deliveryTime }}</view>
+										<view class="delivery-time"> 时段: {{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
 									</view>
 								</view>
 								<view class="total">
@@ -90,13 +83,19 @@
 									</view>
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time">结束时间 {{ item.deliveryTime }}</view>
+										<view class="delivery-time">{{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
 										<text>\n</text>
 										<view class="left">
-											<u-icon name="account-fill" :size="38" color="rgb(23, 112, 255)"></u-icon>
-											<text class=".worker-info">\t人员详情</text>
+											<u-icon name="account-fill" :size="40" color="rgb(255, 173, 32)" 
+											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
+											</u-icon>
+											
+											<text class="worker-info" 
+											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
+											\t点击查看人员详情</text>
 										</view>
 										<view class="delivery-time">接单时间 {{ item.matchTime }}</view>
+										<text class="delivery-time">接单10分钟内可免责取消</text>
 									</view>
 								</view>
 								<view class="total">
@@ -116,7 +115,7 @@
 									</text>
 								</view>
 								<view class="bottom">
-									<view class="exchange btn">取消美容师</view>
+									<view class="exchange btn" @click="DenyAction(res.id, res.goodsList[0].matchTime)">取消该人员</view>
 									<view class="exchange btn" @click="CancelRunningOrder(res.id, res.goodsList[0].matchTime)">取消订单</view>
 									<view class="evaluate btn">确认完成</view>
 								</view>
@@ -229,7 +228,7 @@
 					[],
 					[]
 				],
-				dataList: [{
+				/*dataList: [{
 						id: 1,
 						store: '夏日流星限定贩卖',
 						deal: '交易成功',
@@ -251,7 +250,7 @@
 							}
 						]
 					},
-				],
+				],*/
 				list: [{
 						name: '正在招募'
 					},
@@ -275,9 +274,8 @@
 			};
 		},
 		onLoad: function(option) {
+			this.swiperCurrent = option.orderBarNumber;
 			this.getOrderList(option.orderBarNumber);
-			//this.getOrderList(1);
-			//this.getOrderList(2);
 		},
 		computed: {
 			// 价格小数
@@ -345,19 +343,31 @@
 						lists.forEach(list => {
 							const lst = {
 								id: list.id,
-								//store: `${this.$store.getters.userInfo.name} - ${this.$store.getters.userInfo.nick_name}`,
 								deal: order.orderStatus[list.status],
 								goodsList: [{
 									goodsUrl: '//127.0.0.1:8080/api/v1/images/imagetest',
 									title: this.serviceIdToStr(list.service_items),
 									status: order.orderStatus[list.status],
+									startTime: moment(new Date(list.started_at)).format('YYYY-MM-DD HH:mm'),
 									deliveryTime: moment(new Date(list.finished_at)).format('YYYY-MM-DD HH:mm'),
 									matchTime: moment(new Date(list.children.match_order.created_at)).format('YYYY-MM-DD HH:mm'),
 									groomerCount: list.children.groomer.id === 0 ? 0 : 1,
 									basic: list.payment.detail.basic,
 									commission: list.payment.detail.commission,
 									price: list.payment.detail.total_pay,
-									number: 1
+									groomer: {
+										accountID: list.children.groomer.account_id,
+										avatarUrl: list.children.groomer.avatar,
+										nickName: list.children.groomer.nick_name,
+										favor: list.children.groomer.favor,
+										status: list.children.groomer.status,
+										name: list.children.groomer.name,
+										phone: "123456",
+										isVerified: list.children.groomer.is_verified,
+										isCertifiedGroomer: list.children.groomer.is_certified_groomer,
+										qualification: list.children.groomer.qualification,
+									},
+									matchID: list.children.match_order.id
 								}]
 							}
 							this.orderList[idx].push(lst)
@@ -375,15 +385,23 @@
 				// this.loadStatus.splice(this.current,1,"loadmore")
 			},
 			
-			// 美容师详情
-			getGroomerInfo(idx) {				
-				uni.redirectTo({
-					
+			// 取消未接单订单
+			CancelNewOrder(id) {	
+				uni.showModal({
+					title: '提示',
+					content: '你确定要取消这个订单吗?',
+					success: function (res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							this.CancelOrder(id, 0)
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}.bind(this)	
 				})
 			},
 			
-			// 取消未接单订单
-			CancelNewOrder(id) {				
+			CancelOrder(id, statusBar){
 				uni.request({
 					url: `${api.baseUrl}/api/v1/order/pethouse/cancel/${id}`,
 					method: "DELETE",
@@ -393,7 +411,12 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: "../pethouse_order_history/index?orderBarNumber=0"
+							url: `../pethouse_order_history/index?orderBarNumber=${statusBar}`
+						})
+					},
+					fail: (err) => {
+						uni.redirectTo({
+							url: `../pethouse_order_history/index?orderBarNumber=${statusBar}`
 						})
 					}
 				})
@@ -404,21 +427,40 @@
 				var now = moment().valueOf()
 				console.log(now)
 				console.log(moment(matchTime).valueOf())
+				// 超时取消
 				if ((moment(matchTime).valueOf() + 600000) < now){
 					console.log("已超出可取消时间")
 					uni.showModal({
-						title: '提示',
-						content: '这是一个模态弹窗',
+						title: '注意',
+						content: '已超出可取消时间, 强制取消可能会影响您今后的信用, 确定要取消吗?',
 						success: function (res) {
 							if (res.confirm) {
 								console.log('用户点击确定');
+								this.CancelOutofTime(id, 1)
 							} else if (res.cancel) {
 								console.log('用户点击取消');
 							}
-						}
+						}.bind(this)
 					})
 					return
 				}
+				
+				// 正常取消
+				uni.showModal({
+					title: '提示',
+					content: '你确定要取消这个订单吗?',
+					success: function (res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							this.CancelOrder(id, 1)
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}.bind(this)	
+				})
+			},
+			
+			CancelOutofTime(id, statusBar){
 				uni.request({
 					url: `${api.baseUrl}/api/v1/order/pethouse/cancel/${id}`,
 					method: "DELETE",
@@ -428,14 +470,73 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: "../pethouse_order_history/index?orderBarNumber=1"
+							url: `../pethouse_order_history/index?orderBarNumber=${statusBar}`
+						})
+					}
+				})
+			},
+			
+			// 取消美容师
+			DenyAction(id, matchTime){
+				var now = moment().valueOf()
+				console.log(now)
+				console.log(moment(matchTime).valueOf())
+				// 超时取消
+				if ((moment(matchTime).valueOf() + 600000) < now){
+					uni.showModal({
+						title: '注意',
+						content: '已超出可取消人员的时间, 请直接点击"取消订单"',
+						success: function (res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+							}
+						}.bind(this)
+					})
+					return
+				}
+				
+				// 正常取消
+				uni.showModal({
+					title: '提示',
+					content: '你确定要拒绝这位员工吗?',
+					success: function (res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							this.DenyGroomer(id, 1)
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}.bind(this)	
+				})
+			},
+			
+			DenyGroomer(id, statusBar){
+				uni.request({
+					url: `${api.baseUrl}/api/v1/order/pethouse/deny/${id}`,
+					method: "DELETE",
+					header: {
+						"content-type": "application/json",
+						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
+					},
+					success: () => {
+						uni.redirectTo({
+							url: `../pethouse_order_history/index?orderBarNumber=${statusBar}`
 						})
 					},
 					fail: (err) => {
 						uni.redirectTo({
-							url: "../pethouse_order_history/index?orderBarNumber=1"
+							url: `../pethouse_order_history/index?orderBarNumber=${statusBar}`
 						})
 					}
+				})
+			},
+			
+			// 美容师简报
+			GetGroomerAbstract(nickName, avartarURL, favor, isVerified, isCertified, phone, qualification) {
+				uni.navigateTo({
+					url: `../groomer_abstract/index?nick_name=${nickName}&avartar=${avartarURL}&favor=${favor}&is_verified=${isVerified}&is_certified=${isCertified}&phone=${phone}&qualification=${qualification}`
 				})
 			},
 			
@@ -444,22 +545,7 @@
 					url: "../release_orders/index"
 				})
 			},
-			// 总价
-			totalPrice(item) {
-				let price = 0;
-				item.map(val => {
-					price += parseFloat(val.price);
-				});
-				return price.toFixed(2);
-			},
-			// 总件数
-			totalNum(item) {
-				let num = 0;
-				item.map(val => {
-					num += val.number;
-				});
-				return num;
-			},
+			
 			// tab栏切换
 			change(index) {
 				this.swiperCurrent = index;
@@ -559,8 +645,8 @@
 				}
 				
 				.worker-info {
-					color: rgb(23, 112, 255);
-					font-size: 28rpx;
+					color: rgb(255, 173, 32);
+					font-size: 35rpx;
 				}
 			}
 

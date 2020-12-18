@@ -1,5 +1,5 @@
 {
-  "name": "awesome_pets",
+  "name": "petflash_front",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jianghaibo12138/awesome_pets.git"
+    "url": "git+https://github.com/HarvestStars/petflash-front.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jianghaibo12138/awesome_pets/issues"
+    "url": "https://github.com/HarvestStars/petflash-front/issues"
   },
-  "homepage": "https://github.com/jianghaibo12138/awesome_pets#readme",
+  "homepage": "https://github.com/HarvestStars/petflash-front#readme",
   "dependencies": {
     "moment": "^2.29.1"
   }

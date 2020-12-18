@@ -114,6 +114,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/groomer_abstract/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "人员信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/finish_order/finish_order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		// "navigationStyle": "custom", // 去掉默认的导航栏
