@@ -124,7 +124,16 @@
             
         }
         ,{
-            "path" : "pages/finish_order/finish_order",
+            "path" : "pages/finish_order/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/comment/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

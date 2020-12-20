@@ -1,13 +1,6 @@
 <template>
 	<view class="wrap">
 		<u-form :model="orderForm" ref="uForm" label-width="180">
-			<!-- 
-			<u-form-item label="订单类型">
-				<u-input placeholder="请选择服务类型" v-model="orderForm.orderType" type="select" input-align="right" @click="orderPickerShow = true" />
-				<u-select v-model="orderPickerShow" :list="orderPickerlist" @confirm="orderTypeConfirm"></u-select>
-			</u-form-item>
-			-->
-
 			<!--  洗剪吹/遛狗 -->
 			<u-form-item label="起始时间" v-show="orderForm.orderTypeIndex !== 'PickUp'">
 				<u-input placeholder="请选择订单起始时间" v-model="orderForm.startTime" type="select" input-align="right" @click="startTimePickerShow = true" />
@@ -257,7 +250,7 @@
 					},
 					success: ({data}) => {
 							uni.redirectTo({
-								url: "../pethouse_order_history/index?orderBarNumber=0"
+								url: "../pethouse_order_history/index?current=0"
 							})
 					},
 					fail: (error) => {

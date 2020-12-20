@@ -1,5 +1,5 @@
 <template>
-	<view class="background">
+	<view class="background">		
 		<view class="wrap">
 			<u-row gutter="16">
 				<u-col span="3">
@@ -10,7 +10,7 @@
 				<u-col span="8">
 					<u-row>
 						<view>
-							昵称: {{nickName}}
+							{{nickName}}
 						</view>
 					</u-row>
 					<view>
@@ -35,9 +35,9 @@
 		</view>
 		<view class="my">
 			<u-cell-group>
-				<u-cell-item icon="integral-fill" title="等级" :value="qualification" :arrow="false"></u-cell-item>
-				<u-cell-item icon="integral-fill" title="评分" :value="favor" :arrow="false"></u-cell-item>
-				<u-cell-item icon="integral-fill" title="联系方式" :value="phone" :arrow="false"></u-cell-item>
+				<u-cell-item icon="integral" title="资质等级" :value="qualification" :arrow="false"></u-cell-item>
+				<u-cell-item icon="star" title="评分" :value="favor" :arrow="false"></u-cell-item>
+				<u-cell-item icon="phone" title="联系方式" :value="phone" :arrow="false"></u-cell-item>
 			</u-cell-group>
 		</view>
 	</view>
