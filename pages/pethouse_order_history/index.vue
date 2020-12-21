@@ -232,24 +232,14 @@
 		
 		onLoad: function(option) {
 			this.current = parseInt(option.current);
-			this.getOrderList(parseInt(option.current));
-			//this.getOrderList(1);
-			//this.getOrderList(2);
+			this.getOrderList(this.current);		
 		},
 		
-		/*
-		onShow: function() {
-			console.log("刷新前",this.barIndex)
-			if (this.barIndex != -1){
-				// 需要刷新页面数据
-				this.current = this.barIndex;
-				this.orderList[this.barIndex] = []
-				this.getOrderList(this.barIndex);
-				console.log("刷新后",this.barIndex);
-				this.barIndex = -1;
-			}
+		// 在当前page中等待页面数据的变化, 等待回调然后刷新页面数据
+		onShow: function(){
+			console.log("onShow: running order list length");
+			this.getOrderList(this.current);			
 		},
-		*/
 		
 		methods: {
 			reachBottom() {
@@ -291,13 +281,13 @@
 			
 			// 页面数据
 			getOrderList(idx) {
-				console.log("触发页面数据获取",idx)
+				console.log("getOrderList 触发页面数据获取",idx)
 				const idx2Status = {
 					0: [2, 3, 4],
 					1: [5],
 					2: [6],
 				}
-				
+
 				uni.request({
 					url: `${api.baseUrl}/api/v1/order/pethouse/list?page_size=${this.pageInfo.pageSize}&page_index=${this.pageInfo.page}&${this.generateQueryParam(idx2Status[idx])}`,
 					method: "GET",
@@ -308,7 +298,10 @@
 					success: ({
 						data
 					}) => {
-						const lists = data.data.lists === null ? [] : data.data.lists
+						console.log("getOrderList 历史数据页面的request数据回调开始")
+						console.log("getOrderList orderList重置为空")
+						this.orderList[idx] = [];
+						const lists = data.data.lists === null ? [] : data.data.lists;
 						lists.forEach(list => {
 							const lst = {
 								id: list.id,
@@ -339,7 +332,21 @@
 									matchID: list.children.match_order.id
 								}]
 							}
-							this.orderList[idx].push(lst)
+							this.orderList[idx].push(lst);
+							/*
+							let itemIdx = this.orderList[idx].findIndex(item => {
+								if (item.id === lst.id){
+									return true;
+								}
+							})
+							if (itemIdx === -1){
+								console.log("getOrderList 数据获取后放入list",lst.id)
+								this.orderList[idx].push(lst)
+								console.log("数据获取后, list长度",this.orderList[idx].length)
+							}else{
+								console.log("getOrderList 数据重复丢弃, id号",lst.id)
+							}
+							*/
 						})
 						this.pageInfo.total_pages = data.data.pagination.total_pages
 					}
@@ -414,11 +421,6 @@
 						uni.redirectTo({
 							url: `../pethouse_order_history/index?current=${statusBar}`
 						})
-					},
-					fail: (err) => {
-						uni.redirectTo({
-							url: `../pethouse_order_history/index?current=${statusBar}`
-						})
 					}
 				})
 			},
@@ -489,21 +491,53 @@
 			
 			// 订单确认
 			confirmOrder(idx) {
-				uni.redirectTo({
+				uni.navigateTo({
 					url: `../finish_order/index?order_id=${idx}`
 				})
 			},
 			
 			// 写评论
 			sendComment(idx) {
-				uni.redirectTo({
+				uni.navigateTo({
 					url: `../comment/index?order_id=${idx}&comment_type=ToGroomerOrder`
 				})
 			},
 			
-			setData(barIndex){
-				console.log("setData")
-				this.barIndex = barIndex;
+			setOrderList(orderIdx, list){
+				this.orderList[orderIdx] = list;
+			},
+			
+			cleanOrderList(orderIdx){
+				this.orderList[orderIdx] = [];
+			},
+			
+			removeOrderListEle(orderIdx, id){
+				var idx = this.orderList[orderIdx].findIndex(item => {
+					if (item.id == id){
+						return true;
+					}
+				});
+				if　(idx === -1){
+					console.log("目标元素不存在");
+				}else{
+					console.log("待删除组", this.orderList[orderIdx]);
+					this.orderList[orderIdx].splice(idx, 1);
+					console.log("删除后", this.orderList[orderIdx]);
+				}
+			},
+			
+			orderBeCommented(id){
+				var idx = this.orderList[2].findIndex(item => {
+					if (item.id == id){
+						return true;
+					}
+				});
+				if　(idx === -1){
+					console.log("目标元素不存在");
+				}else{
+					this.orderList[2][idx].goodsList[0].isComment = true;
+					console.log("标记完成");
+				}
 			},
 			
 			// tab栏切换
@@ -512,7 +546,6 @@
 				this.current = index;
 				this.pageInfo.page = 1;
 				this.pageInfo.total_pages = 0;
-				this.orderList[index] = []
 				this.getOrderList(index);
 			},
 			

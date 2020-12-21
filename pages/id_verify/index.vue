@@ -1,27 +1,29 @@
 <template>
 	<view style="background-color: rgb(248, 248, 248); padding: 14px;">
 		<view style="background-color: rgb(255, 255, 255);">
-			<u-field v-model="idInfo.name" label="姓名" placeholder="请输入">
+			<!--
+			<u-field v-model="idNumberInfo.name" label="姓名" placeholder="请输入">
 			</u-field>
 
 			<u-field v-model="idInfo.idType" @click="showAction" :disabled="true" label="证件类型" right-icon="arrow-down-fill">
 			</u-field>
 
-			<u-field v-model="idInfo.idNumber" label="证件号" placeholder="请输入证件号码">
+			<u-field v-model="idNumberInfo.id_card_number" label="证件号" placeholder="请输入证件号码">
 			</u-field>
 
 			<u-action-sheet @click="clickItem" :list="idTypeList" placeholder="请选择证件类型" v-model="idTypeListShow"></u-action-sheet>
-
+			-->
 		</view>
 
 		<view class="img-upload">
-			<u-upload ref="uUpload" @on-success="uploadFrontSuccess" :header="uploadHeader" upload-text="身份证正面" :action="actionFront" :auto-upload="true"
+			<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" name="id_front" :form-data="idNumberInfo" upload-text="身份证正面" :action="action" :auto-upload="true"
 			 width="630rpx"></u-upload>
 		</view>
 		<view class="img-upload">
-			<u-upload ref="uUpload" @on-success="uploadBackSuccess" :header="uploadHeader" upload-text="身份证反面" :action="actionBack" :auto-upload="true"
+			<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" name="id_back" :form-data="idNumberInfo" upload-text="身份证背面" :action="action" :auto-upload="true"
 			 width="630rpx"></u-upload>
 		</view>
+		
 		<u-checkbox-group v-model="agree" @change="checkboxGroupChange">
 			<u-checkbox @change="checkboxChange" v-model="item.checked" v-for="(item, index) in checkBoxList" :key="index" :name="item.name">{{item.name}}</u-checkbox>
 		</u-checkbox-group>
@@ -35,8 +37,15 @@
 	export default {
 		data() {
 			return {
-				actionFront: `${api.baseUrl}/api/v1/account/uploadimage?image_type=id_front`,
-				actionBack: `${api.baseUrl}/api/v1/account/uploadimage?image_type=id_back`,
+				imageName:["id_front","id_back"],
+				
+				idNumberInfo:{
+					"id_card_number": "",
+					"name":"",
+				},
+				
+				action: `${api.baseUrl}/api/v1/account/uploadimage?image_type=id_card`,
+				//actionBack: `${api.baseUrl}/api/v1/account/uploadimage?image_type=id_card`,
 				uploadHeader: {
 					"content-type": "application/json",
 					Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
@@ -65,9 +74,11 @@
 			}
 		},
 		methods: {
-			submit(e) {
-				console.log(e, "submit")
+			submit() {
+				//this.$refs.uUpload.upload();
+				console.log("上传确认");
 			},
+			
 			showAction() {
 				this.idTypeListShow = true;
 			},

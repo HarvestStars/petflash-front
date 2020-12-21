@@ -52,7 +52,7 @@
 	}, {
 		"path": "pages/aw_map/index",
 		"style": {
-			"navigationBarTitleText": " 地图",
+			"navigationBarTitleText": "地图",
 			"enablePullDownRefresh": false
 		}
 	}, {
@@ -69,14 +69,13 @@
 			"enablePullDownRefresh": false
 		}
 
-	}    ,{
-            "path" : "pages/user_info_upload/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "个人信息",
-                "enablePullDownRefresh": false
-            }
-            
+	} ,{
+		"path" : "pages/user_info_upload/index",
+		"style" : 
+		{
+			"navigationBarTitleText": "个人信息",
+			"enablePullDownRefresh": false
+		}
         }
         ,{
             "path" : "pages/id_verify/index",
@@ -91,7 +90,7 @@
             "path" : "pages/certification_verify/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "资质认证",
+                "navigationBarTitleText": "个人资质上传",
                 "enablePullDownRefresh": false
             }
             
@@ -127,7 +126,7 @@
             "path" : "pages/finish_order/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "结单确认",
                 "enablePullDownRefresh": false
             }
             
@@ -136,7 +135,16 @@
             "path" : "pages/comment/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "评论",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/license_verify/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "门店信息上传",
                 "enablePullDownRefresh": false
             }
             

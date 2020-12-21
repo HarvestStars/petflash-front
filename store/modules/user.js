@@ -4,7 +4,10 @@ const state = {
 	userInfo: uni.getStorageSync('userInfo'),
 	smsInfo: uni.getStorageSync('smsInfo'),
 	token: uni.getStorageSync("token"),
-	requireRols: ["PetHouse", "Groomer"]
+	requireRols: ["PetHouse", "Groomer"],
+	region: uni.getStorageSync('region'),
+	location: uni.getStorageSync('location'),
+	qualification: uni.getStorageSync('qualification'),
 }
 
 const mutations = {
@@ -22,6 +25,15 @@ const mutations = {
 	},
 	SET_TOKEN: (state, token) => {
 		state.token = token
+	},
+	SET_REGION: (state, region) => {
+		state.region = region
+	},
+	SET_LOCATION: (state, location) => {
+		state.location = location
+	},
+	SET_QUALIFICATION: (state, qualification) => {
+		state.qualification = qualification
 	}
 }
 
@@ -77,6 +89,27 @@ const actions = {
 		uni.setStorage({
 			key: 'smsInfo',
 			data: smsInfo
+		})
+	},
+	setRegion({commit}, region) {
+		commit("SET_REGION", region)
+		uni.setStorage({
+			key: 'region',
+			data: region
+		})
+	},
+	setLocation({commit}, location) {
+		commit("SET_LOCATION", location)
+		uni.setStorage({
+			key: 'location',
+			data: location
+		})
+	},
+	setQualification({commit}, qualification) {
+		commit("SET_QUALIFICATION", qualification)
+		uni.setStorage({
+			key: 'qualification',
+			data: qualification
 		})
 	}
 }

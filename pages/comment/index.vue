@@ -49,9 +49,10 @@
 					},
 
 					success: () => {
-						uni.redirectTo({
-							url: `../pethouse_order_history/index?current=2`
-						})
+						var pages = getCurrentPages();
+						var prevPage = pages[pages.length-2];
+						prevPage.$vm.orderBeCommented(this.orderID);
+						uni.navigateBack();
 					}
 				})
 			}

@@ -23,9 +23,17 @@
 		</view>
 		<view class="my">
 			<u-cell-group>
-				<u-cell-item icon="setting-fill" title="我的钱包" :value="`余额: ${my.wallet}`"></u-cell-item>
-				<u-cell-item icon="integral-fill" title="个人信息" value="真实信息认证" @click="verifyClick"></u-cell-item>
-				<u-cell-item icon="integral-fill" title="设置" value="账户/通知"></u-cell-item>
+				<view v-if="userType === 1">
+				<u-cell-item icon="map-fill" title="门店地址" @click="verifyClick(0)"></u-cell-item>
+				</view>
+				<u-cell-item icon="account-fill" title="身份认证" value="已认证" @click="verifyClick(1)"></u-cell-item>
+				<view v-if="userType === 1">
+				<u-cell-item icon="home-fill" title="门店认证" value="未认证" @click="verifyClick(2)"></u-cell-item>
+				</view>
+				<view v-if="userType === 2">
+				<u-cell-item icon="cut" title="资质认证" value="未认证" @click="verifyClick(3)"></u-cell-item>
+				</view>
+				
 			</u-cell-group>
 		</view>
 	</view>
@@ -36,24 +44,37 @@
 		data() {
 			return {
 				src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
-				text: '美容师小明',
-				my: {
-					wallet: 800.0,
-					info: {
-
-					},
-					setting: {
-
-					}
-				}
+				text: '芭莎宠物会所',
+				userType: this.$store.getters.userInfo.user_type,
 			}
 		},
 		methods: {
-			verifyClick() {
-				uni.navigateTo({
-					url: "../user_info_upload/index"
-				})
+			verifyClick(e) {
+				switch (e) {
+					case 0:
+						uni.navigateTo({
+							url: "../personal_info/index" // 门店位置信息
+						})
+						break
+					case 1:
+						uni.navigateTo({
+							url: "../id_verify/index" // 身份证信息
+							
+						})
+						break
+					case 2:
+						uni.navigateTo({
+							url: "../license_verify/index" // 门店环境信息
+						})
+						break
+					case 3:
+						uni.navigateTo({
+							url: "../certification_verify/index" // 美容师证书信息
+						})
+						break
+				}
 			},
+			
 			userDetail() {
 				console.log("userDetail")
 				uni.navigateTo({
