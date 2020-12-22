@@ -91,7 +91,7 @@
             "path" : "pages/pethouse/location/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "门店地址",
+                "navigationBarTitleText": "门店信息",
                 "enablePullDownRefresh": false
             }
             

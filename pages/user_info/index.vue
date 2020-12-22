@@ -9,8 +9,14 @@
 				</u-col>
 				<u-col span="8">
 					<u-row>
-						<view  @click="userDetail">
-							{{text}}
+						<view>
+							{{ nick_name }}
+						</view>
+					</u-row>
+					<!--
+					<u-row>
+						<view>
+							<u-tag text="未认证" shape="circle" mode="dark" />
 						</view>
 					</u-row>
 					<u-row>
@@ -18,20 +24,26 @@
 							<u-tag text="未认证" shape="circle" mode="dark" />
 						</view>
 					</u-row>
+					-->
 				</u-col>
 			</u-row>
 		</view>
 		<view class="my">
 			<u-cell-group>
 				<view v-if="userType === 1">
-				<u-cell-item icon="map-fill" title="门店地址" @click="verifyClick(0)"></u-cell-item>
+				<u-cell-item icon="map-fill" title="门店信息" @click="verifyClick(0)"></u-cell-item>
 				</view>
-				<u-cell-item icon="account-fill" title="身份认证" value="已认证" @click="verifyClick(1)"></u-cell-item>
 				<view v-if="userType === 1">
-				<u-cell-item icon="home-fill" title="门店认证" value="未认证" @click="verifyClick(2)"></u-cell-item>
+				<u-cell-item icon="account-fill" title="店主身份认证" :value="pethouse.owner" @click="verifyClick(1)"></u-cell-item>
 				</view>
 				<view v-if="userType === 2">
-				<u-cell-item icon="cut" title="资质认证" value="未认证" @click="verifyClick(3)"></u-cell-item>
+				<u-cell-item icon="account-fill" title="身份认证" :value="groomer.groomer" @click="verifyClick(1)"></u-cell-item>
+				</view>
+				<view v-if="userType === 1">
+				<u-cell-item icon="home-fill" title="门店认证" :value="pethouse.houseV" @click="verifyClick(2)"></u-cell-item>
+				</view>
+				<view v-if="userType === 2">
+				<u-cell-item icon="cut" title="资质认证" :value="groomer.groomerV" @click="verifyClick(3)"></u-cell-item>
 				</view>
 				
 			</u-cell-group>
@@ -43,10 +55,23 @@
 	export default {
 		data() {
 			return {
+				nick_name: this.$store.getters.userInfo.nick_name,
+				pethouse:{
+					owner: this.is_verified ? "已认证" : "未认证",
+					houseV: this.is_certified_house ? "已认证" : "未认证"
+				},
+				
+				groomer:{
+					groomer: this.is_verified ? "已认证" : "未认证",
+					groomerV: this.IsCertifiedGroomer ? "已认证" : "未认证"
+				},
+				
 				src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
-				text: '芭莎宠物会所',
 				userType: this.$store.getters.userInfo.user_type,
 			}
+		},
+		onShow: function(){
+			this.nick_name = this.$store.getters.userInfo.nick_name
 		},
 		methods: {
 			verifyClick(e) {
@@ -73,13 +98,6 @@
 						})
 						break
 				}
-			},
-			
-			userDetail() {
-				console.log("userDetail")
-				uni.navigateTo({
-					
-				})
 			}
 		}
 	}

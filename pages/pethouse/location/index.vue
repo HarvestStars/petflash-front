@@ -1,5 +1,8 @@
 <template>
 	<view style="padding: 24rpx;">
+		</u-field>
+		<u-field v-model="nick_name" label="门店名称" placeholder="请输入">
+		</u-field>
 		<view>
 			<view class="u-demo-wrap">
 				<view class="u-demo-title">区域选择</view>
@@ -34,11 +37,12 @@
 					area: true
 				},
 				
+				nick_name: `${this.$store.getters.userInfo.nick_name}`,
 				show: false,
-				input: '区域选择',
-				city: "",
-				region: "",
-				address: ""
+				input: `${this.$store.getters.userInfo.city} - ${this.$store.getters.userInfo.region}`,
+				city: `${this.$store.getters.userInfo.city}`,
+				region: `${this.$store.getters.userInfo.region}`,
+				address: `${this.$store.getters.userInfo.location}`
 			}
 		},
 		computed: {
@@ -59,14 +63,20 @@
 						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
 					},
 					data: {
+						nick_name: this.nick_name,
 						city: this.city,
 						region: this.region,
 						location: this.address
 					},
 					success: ({data}) => 
 					{
+						let userInfo = Object.assign(this.$store.getters.userInfo, {
+							nick_name: this.nick_name,
+							city: this.city, 
+							region: this.region, 
+							location: this.address})
+						this.$store.dispatch("user/updateUserInfo", userInfo)
 						console.log(data.data, this.$store)
-						this.$store.dispatch("user/updateUserInfo", {region: this.region})
 						uni.navigateBack()
 					}
 				})

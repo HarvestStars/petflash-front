@@ -1,28 +1,16 @@
 <template>
 	<view style="background-color: rgb(248, 248, 248); padding: 14px;">
-		<!--
-		<view style="background-color: rgb(255, 255, 255);">
-
-			<u-field v-model="idNumberInfo.name" label="姓名" placeholder="请输入">
-			</u-field>
-
-			<u-field v-model="idInfo.idType" @click="showAction" :disabled="true" label="证件类型" right-icon="arrow-down-fill">
-			</u-field>
-
-			<u-field v-model="idNumberInfo.id_card_number" label="证件号" placeholder="请输入证件号码">
-			</u-field>
-
-			<u-action-sheet @click="clickItem" :list="idTypeList" placeholder="请选择证件类型" v-model="idTypeListShow"></u-action-sheet>
-
-		</view>
-		-->
 		<view class="img-upload">
-			<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" name="id_front" :form-data="idNumberInfo" upload-text="身份证正面" :action="action" :auto-upload="true"
-			 width="630rpx"></u-upload>
+			<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" name="id_front" 
+			upload-text="身份证正面" :action="action" :file-list="frontList" :auto-upload="true"
+			 width="630rpx"
+			 ></u-upload>
 		</view>
 		<view class="img-upload">
-			<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" name="id_back" :form-data="idNumberInfo" upload-text="身份证背面" :action="action" :auto-upload="true"
-			 width="630rpx"></u-upload>
+			<u-upload ref="uUpload" max-count="1" @on-success="uploadBackSuccess" :header="uploadHeader" name="id_back" 
+			upload-text="身份证背面" :action="action" :file-list="backList" :auto-upload="true"
+			 width="630rpx"
+			 ></u-upload>
 		</view>
 		
 		<!-- 
@@ -39,68 +27,62 @@
 	export default {
 		data() {
 			return {
-				imageName:["id_front","id_back"],
-				
-				idNumberInfo:{
-					"id_card_number": "",
-					"name":"",
-				},
-				
 				action: `${api.baseUrl}/api/v1/account/uploadimage?image_type=id_card`,
-				//actionBack: `${api.baseUrl}/api/v1/account/uploadimage?image_type=id_card`,
+				frontList:[
+					{url: `${api.baseUrl}${this.$store.getters.userInfo.id_card_front}`+"?user_type=pethouse"}
+				],
+				backList:[
+					{url: `${api.baseUrl}${this.$store.getters.userInfo.id_card_back}`+"?user_type=pethouse"}
+				],
 				uploadHeader: {
 					"content-type": "application/json",
 					Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
 				},
-				idTypeListShow: false,
-				idTypeList: [{
-						text: '身份证'
-					},
-					{
-						text: '护照'
-					}
-				],
-				idInfo: {
-					name: "",
-					idType: "",
-					idNumber: "",
-					idFrontUrl: "",
-					idBackUrl: "",
-				},
-				checkBoxList: [{
-					name: '已阅读并同意《xxx用户协议》',
-					checked: false,
-					disabled: true
-				}],
-				agree: ""
+				
+				//idTypeListShow: false,
+				//idTypeList: [{
+				//		text: '身份证'
+				//	},
+				//	{
+				//		text: '护照'
+				//	}
+				//],
+				//checkBoxList: [{
+				//	name: '已阅读并同意《xxx用户协议》',
+				//	checked: false,
+				//	disabled: true
+				//}],
 			}
 		},
 		methods: {
 			submit() {
-				console.log("上传确认");
+				console.log("确认上传");
 				uni.navigateBack();
 			},
 			
-			showAction() {
-				this.idTypeListShow = true;
-			},
-			clickItem(index) {
-				this.idInfo.idType = this.idTypeList[index].text;
-			},
-			checkboxGroupChange(e) {
-				console.log("checkboxGroupChange", e);
-			},
-			checkboxChange(e) {
-				console.log("radioChange", e)
-			},
 			uploadFrontSuccess(data, index, lists, name) {
+				let userInfo = Object.assign(this.$store.getters.userInfo, {
+					id_card_front: data.data.front
+				})
+				this.$store.dispatch("user/updateUserInfo", userInfo)
+				console.log(this.$store)
 				console.log(data, index, lists, name, "uploadFrontSuccess")
-				this.idInfo.idFrontUrl = data.data
 			},
+			
 			uploadBackSuccess(data, index, lists, name) {
+				let userInfo = Object.assign(this.$store.getters.userInfo, {
+					id_card_back: data.data.back
+				})
+				this.$store.dispatch("user/updateUserInfo", userInfo)
+				console.log(this.$store)
 				console.log(data, index, lists, name, "uploadBackSuccess")
-				this.idInfo.idBackUrl = data.data
 			}
+			//checkboxGroupChange(e) {
+			//	console.log("checkboxGroupChange", e);
+			//},
+			//checkboxChange(e) {
+			//	console.log("radioChange", e)
+			//},
 		}
 	}
 </script>
