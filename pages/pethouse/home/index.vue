@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import FontAwesome from "../../components/Am-FontAwesome/index.vue"
+	import FontAwesome from "../../../components/Am-FontAwesome/index.vue"
 	import Home from "./home.vue"
 	export default {
 		data() {
@@ -52,17 +52,17 @@
 				switch (command) {
 					case 0:
 						uni.navigateTo({
-							url: "../pethouse_home/index"
+							url: "../home/index"
 						})
 						break
 					case 1:
 						uni.navigateTo({
-							url: "../pethouse_order_history/index?current=0"
+							url: "../order_history/index?current=0"
 						})
 						break
 					case 2:
 						uni.navigateTo({
-							url: "../user_info/index"
+							url: "../../user_info/index"
 						})
 						break
 				}

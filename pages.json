@@ -21,7 +21,7 @@
 			"enablePullDownRefresh": false
 		}
 	}, {
-		"path": "pages/pethouse_home/index",
+		"path": "pages/pethouse/home/index",
 		"style": {
 			// "navigationStyle": "custom",
 			"navigationBarTitleText": "宠物店",
@@ -29,7 +29,7 @@
 		}
 
 	}, {
-		"path": "pages/release_orders/index",
+		"path": "pages/pethouse/release_orders/index",
 		"style": {
 			// "navigationStyle": "custom",
 			"navigationBarTitleText": "派单",
@@ -44,7 +44,7 @@
 		}
 
 	}, {
-		"path": "pages/pethouse_order_history/index",
+		"path": "pages/pethouse/order_history/index",
 		"style": {
 			"navigationBarTitleText": "订单",
 			"enablePullDownRefresh": false
@@ -70,22 +70,14 @@
 		}
 
 	} ,{
-		"path" : "pages/user_info_upload/index",
-		"style" : 
+		"path" : "pages/id_verify/index",
+		"style" :                                                                                    
 		{
-			"navigationBarTitleText": "个人信息",
+			"navigationBarTitleText": "身份认证",
 			"enablePullDownRefresh": false
 		}
-        }
-        ,{
-            "path" : "pages/id_verify/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "身份认证",
-                "enablePullDownRefresh": false
-            }
             
-        }
+    }
         ,{
             "path" : "pages/certification_verify/index",
             "style" :                                                                                    
@@ -96,25 +88,16 @@
             
         }
         ,{
-            "path" : "pages/personal_info/index",
+            "path" : "pages/pethouse/location/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "个人资料",
+                "navigationBarTitleText": "门店地址",
                 "enablePullDownRefresh": false
             }
             
         }
         ,{
-            "path" : "pages/user_detail/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "主页",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/groomer_abstract/index",
+            "path" : "pages/groomer/abstract/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "人员信息",
@@ -123,7 +106,7 @@
             
         }
         ,{
-            "path" : "pages/finish_order/index",
+            "path" : "pages/pethouse/finish_order/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "结单确认",
@@ -141,7 +124,7 @@
             
         }
         ,{
-            "path" : "pages/license_verify/index",
+            "path" : "pages/pethouse/license_verify/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "门店信息上传",

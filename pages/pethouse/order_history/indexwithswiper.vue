@@ -2,13 +2,13 @@
 	<view>
 		<view class="wrap">
 			<view class="u-tabs-box">
-				<u-tabs activeColor="#f29100" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false"
-				 swiperWidth="750"></u-tabs>
+				<u-tabs-swiper activeColor="#f29100" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false"
+				 swiperWidth="750"></u-tabs-swiper>
 			</view>
-			<view>
-				<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
-					<view class="page-box" v-if="current === 0">
-						<view v-if="orderList[0].length > 0">
+			<swiper class="swiper-box" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
+				<swiper-item class="swiper-item">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
+						<view class="page-box" v-if="orderList[0].length > 0">
 							<view class="order" v-for="res in orderList[0]" :key="res.id">
 								<view class="top">
 									<view class="left">
@@ -47,22 +47,26 @@
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
 						</view>
 						<view v-else>
-							<view class="page-box">
-								<view>
-									<view class="centre">
-										<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
-										<view class="explain">
-											您还没有相关的订单
-											<view class="tips">马上去招募美容师</view>
+							<scroll-view scroll-y style="height: 100%;width: 100%;">
+								<view class="page-box">
+									<view>
+										<view class="centre">
+											<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
+											<view class="explain">
+												您还没有相关的订单
+												<view class="tips">马上去招募美容师</view>
+											</view>
+											<view class="btn" @click="releaseOrder">去下单</view>
 										</view>
-										<view class="btn" @click="releaseOrder">去下单</view>
 									</view>
 								</view>
-							</view>
+							</scroll-view>
 						</view>
-					</view>
-					<view class="page-box" v-if="current === 1">
-						<view v-if="orderList[1].length > 0">
+					</scroll-view>
+				</swiper-item>
+				<swiper-item class="swiper-item">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
+						<view class="page-box" v-if="orderList[1].length > 0">
 							<view class="order" v-for="res in orderList[1]" :key="res.id">
 								<view class="top">
 									<view class="left">
@@ -116,22 +120,26 @@
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
 						</view>
 						<view v-else>
-							<view class="page-box">
-								<view>
-									<view class="centre">
-										<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
-										<view class="explain">
-											您还没有相关的订单
-											<view class="tips">马上去招募美容师</view>
+							<scroll-view scroll-y style="height: 100%;width: 100%;">
+								<view class="page-box">
+									<view>
+										<view class="centre">
+											<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
+											<view class="explain">
+												您还没有相关的订单
+												<view class="tips">马上去招募美容师</view>
+											</view>
+											<view class="btn" @click="releaseOrder">去下单</view>
 										</view>
-										<view class="btn" @click="releaseOrder">去下单</view>
 									</view>
 								</view>
-							</view>
+							</scroll-view>
 						</view>
-					</view>
-					<view class="page-box" v-if="current === 2">
-						<view v-if="orderList[2].length > 0">
+					</scroll-view>
+				</swiper-item>
+				<swiper-item class="swiper-item">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
+						<view class="page-box" v-if="orderList[2].length > 0">
 							<view class="order" v-for="res in orderList[2]" :key="res.id">
 								<view class="top">
 									<view class="left">
@@ -177,6 +185,7 @@
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
 						</view>
 						<view v-else>
+							<scroll-view scroll-y style="height: 100%;width: 100%;">
 								<view class="page-box">
 									<view>
 										<view class="centre">
@@ -189,10 +198,11 @@
 										</view>
 									</view>
 								</view>
+							</scroll-view>
 						</view>
-					</view>
-				</scroll-view>
-			</view>
+					</scroll-view>
+				</swiper-item>
+			</swiper>
 		</view>
 	</view>
 </template>
@@ -221,24 +231,40 @@
 					}
 				],
 				current: 0,
-				loadStatus: ['loadmore', 'loadmore', 'loadmore'],
+				swiperCurrent: 0,
+				tabsHeight: 0,
+				dx: 0,
+				loadStatus: ['loadmore', 'loadmore', 'loadmore', 'loadmore'],
 				pageInfo: {
 					page: 1,
 					pageSize: 10,
 					total_pages: 0
 				},
+				barIndex: -1 // -1 表示onShow时保持不刷新，0~2表示刷新的bar序
 			};
 		},
 		
 		onLoad: function(option) {
-			this.current = parseInt(option.current);
-			this.getOrderList(this.current);		
+			this.getOrderList(0);
+			this.getOrderList(1);
+			this.getOrderList(2);
+			/*
+			console.log("触发onload",option.orderBarNumber)
+			this.swiperCurrent = option.orderBarNumber;
+			this.getOrderList(option.orderBarNumber);
+			*/
 		},
 		
-		// 在当前page中等待页面数据的变化, 等待回调然后刷新页面数据
-		onShow: function(){
-			console.log("onShow: running order list length");
-			this.getOrderList(this.current);			
+		onShow: function() {
+			console.log("刷新前",this.barIndex)
+			if (this.barIndex != -1){
+				// 需要刷新页面数据
+				this.swiperCurrent = this.barIndex;
+				this.orderList[this.barIndex] = []
+				this.getOrderList(this.barIndex);
+				console.log("刷新后",this.barIndex);
+				this.barIndex = -1;
+			}
 		},
 		
 		methods: {
@@ -279,16 +305,14 @@
 				})
 			},
 			
-			// 页面数据
-			getOrderList(idx) {
-				console.log("getOrderList 触发页面数据获取",idx)
+			async request (idx) { 
 				const idx2Status = {
 					0: [2, 3, 4],
 					1: [5],
 					2: [6],
-				}
-
-				uni.request({
+				};
+				let err,res;  
+				[err,res] = await uni.request({  
 					url: `${api.baseUrl}/api/v1/order/pethouse/list?page_size=${this.pageInfo.pageSize}&page_index=${this.pageInfo.page}&${this.generateQueryParam(idx2Status[idx])}`,
 					method: "GET",
 					header: {
@@ -298,10 +322,7 @@
 					success: ({
 						data
 					}) => {
-						console.log("getOrderList 历史数据页面的request数据回调开始")
-						console.log("getOrderList orderList重置为空")
-						this.orderList[idx] = [];
-						const lists = data.data.lists === null ? [] : data.data.lists;
+						const lists = data.data.lists === null ? [] : data.data.lists
 						lists.forEach(list => {
 							const lst = {
 								id: list.id,
@@ -332,27 +353,77 @@
 									matchID: list.children.match_order.id
 								}]
 							}
-							this.orderList[idx].push(lst);
-							/*
-							let itemIdx = this.orderList[idx].findIndex(item => {
-								if (item.id === lst.id){
-									return true;
-								}
-							})
-							if (itemIdx === -1){
-								console.log("getOrderList 数据获取后放入list",lst.id)
-								this.orderList[idx].push(lst)
-								console.log("数据获取后, list长度",this.orderList[idx].length)
-							}else{
-								console.log("getOrderList 数据重复丢弃, id号",lst.id)
+							this.orderList[idx].push(lst)
+						})
+						this.pageInfo.total_pages = data.data.pagination.total_pages
+					}
+				});  
+			} ,
+			
+			// 页面数据
+			getOrderList(idx) {
+				console.log("触发页面数据获取",idx)
+				const idx2Status = {
+					0: [2, 3, 4],
+					1: [5],
+					2: [6],
+				}
+				
+				uni.request({
+					url: `${api.baseUrl}/api/v1/order/pethouse/list?page_size=${this.pageInfo.pageSize}&page_index=${this.pageInfo.page}&${this.generateQueryParam(idx2Status[idx])}`,
+					method: "GET",
+					header: {
+						"content-type": "application/json",
+						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
+					},
+					success: ({
+						data
+					}) => {
+						const lists = data.data.lists === null ? [] : data.data.lists
+						lists.forEach(list => {
+							const lst = {
+								id: list.id,
+								deal: order.orderStatus[list.status],
+								goodsList: [{
+									goodsUrl: '//127.0.0.1:8080/api/v1/images/imagetest',
+									title: this.serviceIdToStr(list.service_items),
+									status: order.orderStatus[list.status],
+									startTime: moment(new Date(list.started_at)).format('YYYY-MM-DD HH:mm'),
+									deliveryTime: moment(new Date(list.finished_at)).format('YYYY-MM-DD HH:mm'),
+									matchTime: moment(new Date(list.children.match_order.created_at)).format('YYYY-MM-DD HH:mm'),
+									basic: list.payment.detail.basic,
+									commission: list.payment.detail.commission,
+									totalPay: list.payment.detail.total_pay,
+									isComment: list.is_comment_to,
+									groomer: {
+										accountID: list.children.groomer.account_id,
+										avatarUrl: list.children.groomer.avatar,
+										nickName: list.children.groomer.nick_name,
+										favor: list.children.groomer.favor,
+										status: list.children.groomer.status,
+										name: list.children.groomer.name,
+										phone: list.children.groomer.phone,
+										isVerified: list.children.groomer.is_verified,
+										isCertifiedGroomer: list.children.groomer.is_certified_groomer,
+										qualification: list.children.groomer.qualification,
+									},
+									matchID: list.children.match_order.id
+								}]
 							}
-							*/
+							this.orderList[idx].push(lst)
 						})
 						this.pageInfo.total_pages = data.data.pagination.total_pages
 					}
 				})
 				console.log("list长度",this.orderList[idx].length)
 				this.loadStatus.splice(this.current,1,"loadmore")
+				// for(let i = 0; i < 5; i++) {
+				// 	let index = this.$u.random(0, this.dataList.length - 1);
+				// 	let data = JSON.parse(JSON.stringify(this.dataList[index]));
+				// 	data.id = this.$u.guid();
+				// 	this.orderList[idx].push(data);
+				// }
+				// this.loadStatus.splice(this.current,1,"loadmore")
 			},
 
 			// 取消未接单订单
@@ -419,7 +490,12 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: `../pethouse_order_history/index?current=${statusBar}`
+							url: `../pethouse/order_history/index?orderBarNumber=${statusBar}`
+						})
+					},
+					fail: (err) => {
+						uni.redirectTo({
+							url: `../pethouse/order_history/index?orderBarNumber=${statusBar}`
 						})
 					}
 				})
@@ -471,12 +547,12 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: `../pethouse_order_history/index?current=${statusBar}`
+							url: `../pethouse/order_history/index?orderBarNumber=${statusBar}`
 						})
 					},
 					fail: (err) => {
 						uni.redirectTo({
-							url: `../pethouse_order_history/index?current=${statusBar}`
+							url: `../pethouse/order_history/index?orderBarNumber=${statusBar}`
 						})
 					}
 				})
@@ -491,6 +567,7 @@
 			
 			// 订单确认
 			confirmOrder(idx) {
+				console.log("idx=",idx)
 				uni.navigateTo({
 					url: `../finish_order/index?order_id=${idx}`
 				})
@@ -498,54 +575,27 @@
 			
 			// 写评论
 			sendComment(idx) {
+				console.log("idx=",idx)
+				//var orderInx = this.orderList[2].findIndex((element) => element.id === idx);
+				//this.orderList[2][orderInx].goodsList[0].isComment = true;
+				//console.log("订单号为", idx, "在orderlist中的序号为", orderInx);
 				uni.navigateTo({
 					url: `../comment/index?order_id=${idx}&comment_type=ToGroomerOrder`
 				})
 			},
 			
-			setOrderList(orderIdx, list){
-				this.orderList[orderIdx] = list;
-			},
-			
-			cleanOrderList(orderIdx){
-				this.orderList[orderIdx] = [];
-			},
-			
-			removeOrderListEle(orderIdx, id){
-				var idx = this.orderList[orderIdx].findIndex(item => {
-					if (item.id == id){
-						return true;
-					}
-				});
-				if　(idx === -1){
-					console.log("目标元素不存在");
-				}else{
-					console.log("待删除组", this.orderList[orderIdx]);
-					this.orderList[orderIdx].splice(idx, 1);
-					console.log("删除后", this.orderList[orderIdx]);
-				}
-			},
-			
-			orderBeCommented(id){
-				var idx = this.orderList[2].findIndex(item => {
-					if (item.id == id){
-						return true;
-					}
-				});
-				if　(idx === -1){
-					console.log("目标元素不存在");
-				}else{
-					this.orderList[2][idx].goodsList[0].isComment = true;
-					console.log("标记完成");
-				}
+			setData(barIndex){
+				console.log("setData")
+				this.barIndex = barIndex;
 			},
 			
 			// tab栏切换
 			change(index) {
 				console.log("触发change",index)
-				this.current = index;
+				this.swiperCurrent = index;
 				this.pageInfo.page = 1;
 				this.pageInfo.total_pages = 0;
+				this.orderList[index] = []
 				this.getOrderList(index);
 			},
 			
@@ -553,6 +603,24 @@
 				var orderInx = this.orderList[orderListInx].findIndex((element) => element.id === orderID);
 				this.orderList[orderListInx][orderInx].isComment = true;
 				console.log("订单号为", orderID, "在orderlist中的序号为", orderInx);
+			},
+			
+			transition({
+				detail: {
+					dx
+				}
+			}) {
+				this.$refs.tabs.setDx(dx);
+			},
+			animationfinish({
+				detail: {
+					current
+				}
+			}) {
+				console.log("animationfinish")
+				this.$refs.tabs.setFinishCurrent(current);
+				this.swiperCurrent = current;
+				this.current = current;
 			}
 		}
 	};
@@ -721,7 +789,7 @@
 		height: calc(100vh - var(--window-top));
 		width: 100%;
 	}
-	
+
 	.swiper-box {
 		flex: 1;
 	}

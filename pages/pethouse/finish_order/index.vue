@@ -11,8 +11,8 @@
 </template>
 
 <script>
-	import api from "../../api/index.js"
-	import order from "../../utils/order.js"
+	import api from "../../../api/index.js"
+	import order from "../../../utils/order.js"
 	import moment from "moment"
 	export default {
 		data() {
@@ -86,7 +86,7 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: `../pethouse_order_history/index?current=2`
+							url: `../pethouse/order_history/index?current=2`
 						})
 					}
 				})
@@ -95,7 +95,7 @@
 			cancel(){
 				// 返回上一页
 				uni.redirectTo({
-					url: `../pethouse_order_history/index?current=1`
+					url: `../pethouse/order_history/index?current=1`
 				})
 			}
 		}

@@ -102,17 +102,7 @@
 		},
 		
 		methods: {
-			verifyClick() {
-				uni.navigateTo({
-					url: "../user_info_upload/index"
-				})
-			},
-			userDetail() {
-				console.log("userDetail")
-				uni.navigateTo({
-					url: "../user_detail/index"
-				})
-			}
+			
 		}
 	}
 </script>

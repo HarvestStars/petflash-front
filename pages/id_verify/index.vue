@@ -1,7 +1,8 @@
 <template>
 	<view style="background-color: rgb(248, 248, 248); padding: 14px;">
+		<!--
 		<view style="background-color: rgb(255, 255, 255);">
-			<!--
+
 			<u-field v-model="idNumberInfo.name" label="姓名" placeholder="请输入">
 			</u-field>
 
@@ -12,9 +13,9 @@
 			</u-field>
 
 			<u-action-sheet @click="clickItem" :list="idTypeList" placeholder="请选择证件类型" v-model="idTypeListShow"></u-action-sheet>
-			-->
-		</view>
 
+		</view>
+		-->
 		<view class="img-upload">
 			<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" name="id_front" :form-data="idNumberInfo" upload-text="身份证正面" :action="action" :auto-upload="true"
 			 width="630rpx"></u-upload>
@@ -24,10 +25,11 @@
 			 width="630rpx"></u-upload>
 		</view>
 		
+		<!-- 
 		<u-checkbox-group v-model="agree" @change="checkboxGroupChange">
 			<u-checkbox @change="checkboxChange" v-model="item.checked" v-for="(item, index) in checkBoxList" :key="index" :name="item.name">{{item.name}}</u-checkbox>
 		</u-checkbox-group>
-
+		-->
 		<u-button type="primary" @click="submit">提交</u-button>
 	</view>
 </template>
@@ -68,15 +70,15 @@
 				checkBoxList: [{
 					name: '已阅读并同意《xxx用户协议》',
 					checked: false,
-					disabled: false
+					disabled: true
 				}],
 				agree: ""
 			}
 		},
 		methods: {
 			submit() {
-				//this.$refs.uUpload.upload();
 				console.log("上传确认");
+				uni.navigateBack();
 			},
 			
 			showAction() {

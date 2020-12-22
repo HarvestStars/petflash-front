@@ -71,9 +71,9 @@
 </template>
 
 <script>
-	import api from "../../api/index.js"
+	import api from "../../../api/index.js"
 	import moment from "moment"
-	import order from "../../utils/order.js"
+	import order from "../../../utils/order.js"
 	export default {
 		data() {
 			return {
@@ -250,7 +250,7 @@
 					},
 					success: ({data}) => {
 							uni.redirectTo({
-								url: "../pethouse_order_history/index?current=0"
+								url: "../order_history/index?current=0"
 							})
 					},
 					fail: (error) => {

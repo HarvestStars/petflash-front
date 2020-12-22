@@ -237,12 +237,12 @@
 							}
 							if (this.$store.getters.requireRols.indexOf(userInfo.user_type) > -1) {
 								uni.redirectTo({
-									url: "../pethouse_home/index"
+									url: "../pethouse/home/index"
 								})
 							} else {
 								// todo  区分 pethouse 和 groomer
 								uni.redirectTo({
-									url: "../pethouse_home/index"
+									url: "../pethouse/home/index"
 								})
 							}
 						},

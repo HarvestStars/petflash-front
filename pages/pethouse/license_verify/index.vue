@@ -8,42 +8,43 @@
 		<u-row>
 			<u-col :span="6">
 				<view style="background-color: rgb(255, 255, 255);">
-					<u-upload ref="uUpload-Front" @on-success="uploadFrontSuccess" :header="uploadHeader" upload-text="证书正面" :action="actionFront" :auto-upload="true" width="315rpx"></u-upload>
+					<u-upload max-count="1" ref="uUpload-Front" @on-success="uploadFrontSuccess" :header="uploadHeader" upload-text="门面照" name="environment_front" :action="actionFront" :auto-upload="true" width="315rpx"></u-upload>
 				</view>
 			</u-col>
 			<u-col :span="6">
 				<view style="background-color: rgb(255, 255, 255);">
-					<u-upload ref="uUpload-Back" @on-success="uploadBackSuccess" :header="uploadHeader" upload-text="证书反面" :action="actionBack" :auto-upload="true" width="315rpx"></u-upload>
+					<u-upload max-count="1" ref="uUpload-Back" @on-success="uploadBackSuccess" :header="uploadHeader" upload-text="店内环境" name="environment_inside" :action="actionBack" :auto-upload="true" width="315rpx"></u-upload>
 				</view>
 			</u-col>
 		</u-row>
 
 		<view class="img-upload">
-			<u-upload ref="uUpload-Permiss" @on-success="uploadPermissSuccess" :header="uploadHeader" upload-text="个人承诺书" :action="actionPermiss" :auto-upload="true" width="630rpx"></u-upload>
+			<u-upload max-count="1" ref="uUpload-Permiss" @on-success="uploadPermissSuccess" :header="uploadHeader" upload-text="营业执照" name="license_front" :action="actionPermiss" :auto-upload="true" width="630rpx"></u-upload>
 		</view>
 
+		<!--
 		<u-checkbox-group v-model="agree" @change="checkboxGroupChange">
 			<u-checkbox @change="checkboxChange" v-model="item.checked" v-for="(item, index) in checkBoxList" :key="index" :name="item.name">{{item.name}}</u-checkbox>
 		</u-checkbox-group>
-
+		-->
 		<u-button type="primary" @click="submit">认证信息</u-button>
 	</view>
 </template>
 
 <script>
-	import api from "../../api/index.js"
+	import api from "../../../api/index.js"
 	export default {
 		data() {
 			return {
-				actionFront: `${api.baseUrl}/api/v1/account/uploadimage?image_type=certifi_front`,
-				actionBack: `${api.baseUrl}/api/v1/account/uploadimage?image_type=certifi_back`,
-				actionPermiss: `${api.baseUrl}/api/v1/account/uploadimage?image_type=permiss`,
+				actionFront: `${api.baseUrl}/api/v1/account/uploadimage?image_type=house_license`,
+				actionBack: `${api.baseUrl}/api/v1/account/uploadimage?image_type=house_license`,
+				actionPermiss: `${api.baseUrl}/api/v1/account/uploadimage?image_type=house_license`,
 				uploadHeader: {
 					"content-type": "application/json",
 					Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
 				},
 				certfi: {
-					level: "",
+					level: this.$store.getters.userInfo.user_type,
 					certfiFrontUrl: "",
 					certfiBackUrl: "",
 					certfiPermissUrl: ""

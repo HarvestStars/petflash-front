@@ -53,7 +53,7 @@
 				switch (e) {
 					case 0:
 						uni.navigateTo({
-							url: "../personal_info/index" // 门店位置信息
+							url: "../pethouse/location/index" // 门店位置信息
 						})
 						break
 					case 1:
@@ -64,7 +64,7 @@
 						break
 					case 2:
 						uni.navigateTo({
-							url: "../license_verify/index" // 门店环境信息
+							url: "../pethouse/license_verify/index" // 门店环境信息
 						})
 						break
 					case 3:
@@ -78,7 +78,7 @@
 			userDetail() {
 				console.log("userDetail")
 				uni.navigateTo({
-					url: "../user_detail/index"
+					
 				})
 			}
 		}
