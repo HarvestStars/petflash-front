@@ -139,6 +139,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/groomer/order_history/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/pethouse/abstract/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		// "navigationStyle": "custom", // 去掉默认的导航栏

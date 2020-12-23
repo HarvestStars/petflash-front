@@ -10,20 +10,26 @@
 					<view class="page-box" v-if="current === 0">
 						<view v-if="orderList[0].length > 0">
 							<view class="order" v-for="res in orderList[0]" :key="res.id">
-								<!--
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - {{res.goodsList[0].pethouse.location }}</view>
 									</view>
-									<view class="right">{{ res.deal }}</view>
+									<view class="right">										
+										<text class="worker-info" 
+										@click="GetPetHouseAbstract(res.goodsList[0].pethouse.nickName, res.goodsList[0].pethouse.favor,
+										res.goodsList[0].pethouse.location, res.goodsList[0].pethouse.phone, res.goodsList[0].pethouse.isVerified,res.goodsList[0].pethouse.isCertifiedHouse)">
+										门店简介</text>
+									</view>
 								</view>
-								-->
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item">
 									<view class="content">
-										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time"> 时段: {{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
+										<view class="title u-line-2">{{ res.goodsList[0].title }}</view>
+										<view class="delivery-time"> 时段: {{ res.goodsList[0].deliveryTime }} ~ {{ res.goodsList[0].deliveryTime }}</view>
 									</view>
 								</view>
+								<text>\n</text>
+								
 								<view class="total">
 									<text>
 										<text v-if="res.goodsList[0].basic > 0">
@@ -43,7 +49,7 @@
 								<view class="bottom">
 									<view class="more">
 									</view>
-									<view class="evaluate btn" @click="CancelNewOrder(res.id)">取消订单</view>
+									<view class="evaluate btn" @click="CreateMatchOrder(res.id)">确认接单</view>
 								</view>
 							</view>
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
@@ -54,41 +60,56 @@
 									<view class="centre">
 										<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
 										<view class="explain">
-											您还没有相关的订单
-											<view class="tips">马上去招募美容师</view>
+											该区域目前没有订单
+											<view class="tips">请耐心等待，或者换个区域接单哦~</view>
 										</view>
-										<view class="btn" @click="releaseOrder">去下单</view>
 									</view>
 								</view>
+							</view>
+						</view>
+						<view class="cu-bar tabbar bg-white shadow foot">
+							<view class="action">
+								<view>
+									<FontAwesome type="fas fa-receipt" size="40" fw :class="'text-gray'"></FontAwesome>
+								</view>
+								<u-picker
+									mode="region" 
+									v-model="show" 
+									@confirm="regionSelect"
+									:area-code='["31", "3101", "310101"]' 
+									:params="params"
+									></u-picker>
+								<view class="bar-icon" :class="'text-gray'" @click="show = true">{{ region != "" ? region : "地区选择" }}</view>
+							</view>
+							<view class="action">
+								<view>
+									<FontAwesome type="fas fa-user-circle" size="40" fw :class="activeItem === 2? 'text-green': 'text-gray'"></FontAwesome>
+								</view>
+								<view class="bar-icon" :class="'text-gray'" @click="regionReset">显示全部</view>
 							</view>
 						</view>
 					</view>
 					<view class="page-box" v-if="current === 1">
 						<view v-if="orderList[1].length > 0">
 							<view class="order" v-for="res in orderList[1]" :key="res.id">
-								<!--
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - {{res.goodsList[0].pethouse.location }}</view>
 									</view>
-									<view class="right">{{ res.deal }}</view>
+									<view class="right">										
+										<text class="worker-info" 
+										@click="GetPetHouseAbstract(res.goodsList[0].pethouse.nickName, res.goodsList[0].pethouse.favor,
+										res.goodsList[0].pethouse.location, res.goodsList[0].pethouse.phone, res.goodsList[0].pethouse.isVerified,res.goodsList[0].pethouse.isCertifiedHouse)">
+										门店简介</text>
+									</view>
 								</view>
-								-->
-								<view class="item" v-for="item in res.goodsList">
+								<view class="item">
 									<view class="content">
-										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time">{{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
-										<view class="delivery-time">接单时间 {{ item.matchTime }}</view>
+										<view class="title u-line-2">{{ res.goodsList[0].title }}</view>
+										<view class="delivery-time">{{ res.goodsList[0].deliveryTime }} ~ {{ res.goodsList[0].deliveryTime }}</view>
+										<view class="delivery-time">接单时间 {{ res.goodsList[0].matchTime }}</view>
 										<text>\n</text>
-										<view class="left">
-											<u-icon name="cut" :size="40" color="rgb(255, 173, 32)" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											</u-icon>
-											
-											<text class="worker-info" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											\t人员简介</text>
-										</view>
 										<text class="delivery-time">接单10分钟内可免责取消</text>
 									</view>
 								</view>
@@ -109,9 +130,8 @@
 									</text>
 								</view>
 								<view class="bottom">
-									<view class="exchange btn" @click="DenyAction(res.id, res.goodsList[0].matchTime)">取消该人员</view>
-									<view class="exchange btn" @click="CancelRunningOrder(res.id, res.goodsList[0].matchTime)">取消订单</view>
-									<view class="evaluate btn" @click="confirmOrder(res.id)">确认完成</view>
+									<view class="evaluate btn" @click="CancelRunningOrder(res.id, res.goodsList[0].matchTime)">取消订单</view>
+									<view class="exchange btn">完成后店主确认</view>
 								</view>
 							</view>
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
@@ -123,9 +143,9 @@
 										<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
 										<view class="explain">
 											您还没有相关的订单
-											<view class="tips">马上去招募美容师</view>
+											<view class="tips">马上去接单吧!</view>
 										</view>
-										<view class="btn" @click="releaseOrder">去下单</view>
+										<view class="btn" @click="releaseOrder">去接单</view>
 									</view>
 								</view>
 							</view>
@@ -134,29 +154,22 @@
 					<view class="page-box" v-if="current === 2">
 						<view v-if="orderList[2].length > 0">
 							<view class="order" v-for="res in orderList[2]" :key="res.id">
-								<!--
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.store }}</view>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - {{res.goodsList[0].pethouse.location }}</view>
 									</view>
-									<view class="right">{{ res.deal }}</view>
+									<view class="right">										
+										<text class="worker-info" 
+										@click="GetPetHouseAbstract(res.goodsList[0].pethouse.nickName, res.goodsList[0].pethouse.favor,
+										res.goodsList[0].pethouse.location, res.goodsList[0].pethouse.phone, res.goodsList[0].pethouse.isVerified,res.goodsList[0].pethouse.isCertifiedHouse)">
+										门店简介</text>
+									</view>
 								</view>
-								-->
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item">
 									<view class="content">
-										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time">{{ item.startTime }} ~ {{ item.deliveryTime }}</view>
-										<text>\n</text>
-										<view class="left">
-											<u-icon name="cut" :size="40" color="rgb(255, 173, 32)" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											</u-icon>
-											
-											<text class="worker-info" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											\t人员简介</text>
-										</view>
+										<view class="title u-line-2">{{ res.goodsList[0].title }}</view>
+										<view class="delivery-time">{{ res.goodsList[0].startTime }} ~ {{ res.goodsList[0].deliveryTime }}</view>
 									</view>
 								</view>
 								<view class="total">
@@ -206,6 +219,15 @@
 	export default {
 		data() {
 			return {
+				show: false,
+				params: {
+					province: true,
+					city: true,
+					area: true
+				},
+				
+				city:"",
+				region: "",
 				orderList: [
 					[],
 					[],
@@ -234,13 +256,22 @@
 		
 		onLoad: function(option) {
 			this.current = parseInt(option.current);
-			//this.getOrderList(this.current);		
+			if (option.region === undefined){
+				this.region = "";
+			}else{
+				this.region = option.region;
+			}
+			 
 		},
 		
 		// 在当前page中等待页面数据的变化, 等待回调然后刷新页面数据
 		onShow: function(){
 			console.log("onShow: running order list length");
-			this.getOrderList(this.current);			
+			if (this.current === 0){
+				this.getActiveList();
+			}else{
+				this.getOrderList(this.current);	
+			}
 		},
 		
 		methods: {
@@ -249,7 +280,11 @@
 				this.loadStatus.splice(this.current, 1, "loading")
 				if (this.pageInfo.page < this.pageInfo.total_pages) {
 					this.pageInfo.page += 1
-					this.getOrderList(this.current);
+					if (this.current === 0){
+						this.getActiveList();
+					}else{
+						this.getOrderList(this.current);	
+					}
 				}
 			},
 			
@@ -274,11 +309,79 @@
 				return s.join("&")
 			},
 			
-			// 发布订单
-			releaseOrder() {
+			// 区域选择
+			regionSelect(e){
+				this.city = (e.city.label === "市辖区") ? e.province.label : e.city.label;
+				this.region = e.area.label;
+				console.log("区域选择",this.region);
+				if (e.city.label === "市辖区"){
+					this.input = e.province.label + '-' + e.area.label;
+				}else{
+					this.input = e.province.label + '-' + e.city.label + '-' + e.area.label;
+				};
 				uni.redirectTo({
-					url: "../release_orders/index"
+					url: `../order_history/index?current=0&region=${this.region}`
 				})
+			},
+			
+			// 区域重置
+			regionReset(){
+				this.region = "";
+				uni.redirectTo({
+					url: `../order_history/index?current=0`
+				})
+			},
+			
+			// 获取等待接单列表
+			getActiveList() {
+				console.log("getActiveList 触发页面数据获取")
+				uni.request({
+					url: `${api.baseUrl}/api/v1/order/groomer/active?page_size=${this.pageInfo.pageSize}&page_index=${this.pageInfo.page}&region=${this.region}`,
+					method: "GET",
+					header: {
+						"content-type": "application/json",
+						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
+					},
+					success: ({
+						data
+					}) => {
+						console.log("getActiveList 历史数据页面的request数据回调开始")
+						this.orderList[0] = [];
+						const lists = data.data.lists === null ? [] : data.data.lists;
+						console.log("获取的数据",lists)
+						lists.forEach(list => {
+							const lst = {
+								id: list.id,
+								deal: order.orderStatus[list.status],
+								goodsList: [{
+									title: this.serviceIdToStr(list.service_items),
+									status: order.orderStatus[list.status],
+									startTime: moment(new Date(list.started_at)).format('YYYY-MM-DD HH:mm'),
+									deliveryTime: moment(new Date(list.finished_at)).format('YYYY-MM-DD HH:mm'),
+									basic: list.payment.detail.basic,
+									commission: list.payment.detail.commission,
+									totalPay: list.payment.detail.total_pay,
+									pethouse: {
+										accountID: list.pethouse.account_id,
+										avatarUrl: list.pethouse.avatar,
+										nickName: list.pethouse.nick_name,
+										city: list.pethouse.city,
+										region: list.pethouse.region,
+										location: list.pethouse.location,
+										favor: list.pethouse.favor,
+										phone: list.pethouse.phone,
+										isVerified: list.pethouse.is_verified,
+										isCertifiedHouse: list.pethouse.is_certified_house,
+									},
+								}]
+							}
+							this.orderList[0].push(lst);
+						})
+						this.pageInfo.total_pages = data.data.pagination.total_pages
+					}
+				})
+				console.log("待接单list长度",this.orderList[0].length)
+				this.loadStatus.splice(this.current,1,"loadmore")
 			},
 			
 			// 页面数据
@@ -291,7 +394,7 @@
 				}
 
 				uni.request({
-					url: `${api.baseUrl}/api/v1/order/pethouse/list?page_size=${this.pageInfo.pageSize}&page_index=${this.pageInfo.page}&${this.generateQueryParam(idx2Status[idx])}`,
+					url: `${api.baseUrl}/api/v1/order/groomer/list?page_size=${this.pageInfo.pageSize}&page_index=${this.pageInfo.page}&${this.generateQueryParam(idx2Status[idx])}`,
 					method: "GET",
 					header: {
 						"content-type": "application/json",
@@ -301,7 +404,6 @@
 						data
 					}) => {
 						console.log("getOrderList 历史数据页面的request数据回调开始")
-						console.log("getOrderList orderList重置为空")
 						this.orderList[idx] = [];
 						const lists = data.data.lists === null ? [] : data.data.lists;
 						lists.forEach(list => {
@@ -312,43 +414,29 @@
 									goodsUrl: '//127.0.0.1:8080/api/v1/images/imagetest',
 									title: this.serviceIdToStr(list.service_items),
 									status: order.orderStatus[list.status],
-									startTime: moment(new Date(list.started_at)).format('YYYY-MM-DD HH:mm'),
-									deliveryTime: moment(new Date(list.finished_at)).format('YYYY-MM-DD HH:mm'),
-									matchTime: moment(new Date(list.children.match_order.created_at)).format('YYYY-MM-DD HH:mm'),
-									basic: list.payment.detail.basic,
-									commission: list.payment.detail.commission,
-									totalPay: list.payment.detail.total_pay,
+									startTime: moment(new Date(list.parent.requirement_order.started_at)).format('YYYY-MM-DD HH:mm'),
+									deliveryTime: moment(new Date(list.parent.requirement_order.finished_at)).format('YYYY-MM-DD HH:mm'),
+									matchTime: moment(new Date(list.created_at)).format('YYYY-MM-DD HH:mm'),
+									basic: list.parent.requirement_order.payment.detail.basic,
+									commission: list.parent.requirement_order.payment.detail.commission,
+									totalPay: list.parent.requirement_order.payment.detail.total_pay,
 									isComment: list.is_comment_to,
-									groomer: {
-										accountID: list.children.groomer.account_id,
-										avatarUrl: list.children.groomer.avatar,
-										nickName: list.children.groomer.nick_name,
-										favor: list.children.groomer.favor,
-										status: list.children.groomer.status,
-										name: list.children.groomer.name,
-										phone: list.children.groomer.phone,
-										isVerified: list.children.groomer.is_verified,
-										isCertifiedGroomer: list.children.groomer.is_certified_groomer,
-										qualification: list.children.groomer.qualification,
+									pethouse: {
+										accountID: list.parent.tu_pethouse.account_id,
+										avatarUrl: list.parent.tu_pethouse.avatar,
+										nickName: list.parent.tu_pethouse.nick_name,
+										city: list.parent.tu_pethouse.city,
+										region: list.parent.tu_pethouse.region,
+										location: list.parent.tu_pethouse.location,
+										favor: list.parent.tu_pethouse.favor,
+										phone: list.parent.tu_pethouse.phone,
+										isVerified: list.parent.tu_pethouse.is_verified,
+										isCertifiedHouse: list.parent.tu_pethouse.is_certified_house,
 									},
-									matchID: list.children.match_order.id
+									PetHouseOrderID: list.pethouse_order_id,
 								}]
 							}
 							this.orderList[idx].push(lst);
-							/*
-							let itemIdx = this.orderList[idx].findIndex(item => {
-								if (item.id === lst.id){
-									return true;
-								}
-							})
-							if (itemIdx === -1){
-								console.log("getOrderList 数据获取后放入list",lst.id)
-								this.orderList[idx].push(lst)
-								console.log("数据获取后, list长度",this.orderList[idx].length)
-							}else{
-								console.log("getOrderList 数据重复丢弃, id号",lst.id)
-							}
-							*/
 						})
 						this.pageInfo.total_pages = data.data.pagination.total_pages
 					}
@@ -357,19 +445,35 @@
 				this.loadStatus.splice(this.current,1,"loadmore")
 			},
 
-			// 取消未接单订单
-			CancelNewOrder(id) {	
+			// 接单
+			CreateMatchOrder(id){
 				uni.showModal({
 					title: '提示',
-					content: '你确定要取消这个订单吗?',
+					content: '确定接单吗?',
 					success: function (res) {
 						if (res.confirm) {
 							console.log('用户点击确定');
-							this.CancelOrder(id, 0)
+							this.CreateOrder(id)
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
 					}.bind(this)	
+				})
+			},
+
+			CreateOrder(id){
+				uni.request({
+					url: `${api.baseUrl}/api/v1/order/groomer/create/${id}`,
+					method: "POST",
+					header: {
+						"content-type": "application/json",
+						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
+					},
+					success: () => {
+						uni.redirectTo({
+							url: `../order_history/index?current=1`
+						})
+					}
 				})
 			},
 			
@@ -403,7 +507,7 @@
 					success: function (res) {
 						if (res.confirm) {
 							console.log('用户点击确定');
-							this.CancelOrder(id, 1)
+							this.CancelOrder(id)
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
@@ -411,9 +515,9 @@
 				})
 			},
 			
-			CancelOrder(id, statusBar){
+			CancelOrder(id){
 				uni.request({
-					url: `${api.baseUrl}/api/v1/order/pethouse/cancel/${id}`,
+					url: `${api.baseUrl}/api/v1/order/groomer/cancel/${id}`,
 					method: "DELETE",
 					header: {
 						"content-type": "application/json",
@@ -421,111 +525,25 @@
 					},
 					success: () => {
 						uni.redirectTo({
-							url: `../order_history/index?current=${statusBar}`
+							url: `../order_history/index?current=1`
 						})
 					}
 				})
 			},
 			
-			// 取消美容师
-			DenyAction(id, matchTime){
-				var now = moment().valueOf()
-				console.log(now)
-				console.log(moment(matchTime).valueOf())
-				// 超时取消
-				if ((moment(matchTime).valueOf() + 600000) < now){
-					uni.showModal({
-						title: '注意',
-						content: '已超出可取消人员的时间, 请直接点击"取消订单"',
-						success: function (res) {
-							if (res.confirm) {
-								console.log('用户点击确定');
-							} else if (res.cancel) {
-								console.log('用户点击取消');
-							}
-						}.bind(this)
-					})
-					return
-				}
-				
-				// 正常取消
-				uni.showModal({
-					title: '提示',
-					content: '你确定要拒绝这位员工吗?',
-					success: function (res) {
-						if (res.confirm) {
-							console.log('用户点击确定');
-							this.DenyGroomer(id, 1)
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}.bind(this)	
-				})
-			},
-			
-			DenyGroomer(id, statusBar){
-				uni.request({
-					url: `${api.baseUrl}/api/v1/order/pethouse/deny/${id}`,
-					method: "DELETE",
-					header: {
-						"content-type": "application/json",
-						Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
-					},
-					success: () => {
-						uni.redirectTo({
-							url: `../order_history/index?current=${statusBar}`
-						})
-					},
-					fail: (err) => {
-						uni.redirectTo({
-							url: `../order_history/index?current=${statusBar}`
-						})
-					}
-				})
-			},
-			
-			// 美容师简报
-			GetGroomerAbstract(nickName, avartarURL, favor, isVerified, isCertified, phone, qualification) {
+			// 门店简报
+			GetPetHouseAbstract(nickName, favor, location, phone, isVerified, isCertifiedHouse) {
 				uni.navigateTo({
-					url: `../../groomer/abstract/index?nick_name=${nickName}&avartar=${avartarURL}&favor=${favor}&is_verified=${isVerified}&is_certified=${isCertified}&phone=${phone}&qualification=${qualification}`
+					url: `../../pethouse/abstract/index?nick_name=${nickName}&favor=${favor}&location=${location}&phone=${phone}&is_verified=${isVerified}&is_certified_house=${isCertifiedHouse}`
 				})
 			},
 			
-			// 订单确认
-			confirmOrder(idx) {
-				uni.navigateTo({
-					url: `../finish_order/index?order_id=${idx}`
-				})
-			},
 			
 			// 写评论
 			sendComment(idx) {
 				uni.navigateTo({
-					url: `../../common/comment/index?order_id=${idx}&comment_type=ToGroomerOrder`
+					url: `../../common/comment/index?order_id=${idx}&comment_type=ToPetHouseOrder`
 				})
-			},
-			
-			setOrderList(orderIdx, list){
-				this.orderList[orderIdx] = list;
-			},
-			
-			cleanOrderList(orderIdx){
-				this.orderList[orderIdx] = [];
-			},
-			
-			removeOrderListEle(orderIdx, id){
-				var idx = this.orderList[orderIdx].findIndex(item => {
-					if (item.id == id){
-						return true;
-					}
-				});
-				if　(idx === -1){
-					console.log("目标元素不存在");
-				}else{
-					console.log("待删除组", this.orderList[orderIdx]);
-					this.orderList[orderIdx].splice(idx, 1);
-					console.log("删除后", this.orderList[orderIdx]);
-				}
 			},
 			
 			orderBeCommented(id){
@@ -548,13 +566,11 @@
 				this.current = index;
 				this.pageInfo.page = 1;
 				this.pageInfo.total_pages = 0;
-				this.getOrderList(index);
-			},
-			
-			isCommentIndex(orderListInx, orderID){
-				var orderInx = this.orderList[orderListInx].findIndex((element) => element.id === orderID);
-				this.orderList[orderListInx][orderInx].isComment = true;
-				console.log("订单号为", orderID, "在orderlist中的序号为", orderInx);
+				if (this.current === 0){
+					this.getActiveList();
+				}else{
+					this.getOrderList(this.current);	
+				}
 			}
 		}
 	};

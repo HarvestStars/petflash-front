@@ -1,6 +1,6 @@
 <template>
 	<u-form :model="form" ref="uForm">
-		<u-form-item label="对该员工的评价"><u-input placeholder="评价今后会以匿名的形式显示在ta的主页" v-model="form.content" /></u-form-item>
+		<u-form-item :label="objLabel"><u-input placeholder="评价今后会以匿名的形式显示在ta的主页" v-model="form.content" /></u-form-item>
 		<view v-if="form.content === null">
 			<u-button shape="circle">发送评论</u-button>
 			<u-button shape="circle" @click="cancel">返回</u-button>
@@ -17,6 +17,7 @@
 	export default {
 		data() {
 			return {
+				objLabel: "",
 				orderID: 0,
 				commentType:"",
 				form: {
@@ -27,6 +28,11 @@
 		onLoad: function(option){
 			this.orderID = parseInt(option.order_id);
 			this.commentType = option.comment_type;
+			if (this.commentType === "ToPetHouseOrder"){
+				this.objLabel = "对该门店的评价"
+			}else{
+				this.objLabel = "对该兼职的评价"
+			}
 		},
 		methods: {			
 			confirm() {

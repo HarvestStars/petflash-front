@@ -89,7 +89,6 @@
 				}else{
 					this.input = e.province.label + '-' + e.city.label + '-' + e.area.label;
 				}
-				
 			}
 		}
 	}
