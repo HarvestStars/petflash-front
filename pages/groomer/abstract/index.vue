@@ -65,7 +65,7 @@
 				this.favor = option.favor;
 			}
 		
-			this.avartarURL = option.avartar;
+			// this.avartarURL = option.avartar;
 			this.phone = option.phone;
 			
 			if (option.is_verified === "true"){

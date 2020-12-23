@@ -580,7 +580,7 @@
 				//this.orderList[2][orderInx].goodsList[0].isComment = true;
 				//console.log("订单号为", idx, "在orderlist中的序号为", orderInx);
 				uni.navigateTo({
-					url: `../comment/index?order_id=${idx}&comment_type=ToGroomerOrder`
+					url: `../../common/comment/index?order_id=${idx}&comment_type=ToGroomerOrder`
 				})
 			},
 			

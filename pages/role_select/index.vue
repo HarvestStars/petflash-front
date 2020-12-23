@@ -43,9 +43,15 @@
 						if (data.code === 0) {
 							this.$store.dispatch("user/setToken", data.data.token)
 							this.$store.dispatch("user/updateUserInfo", data.data.user)
-							uni.redirectTo({
-								url: "../pethouse/home/index"
-							})
+							if (role === "PetHouse"){
+								uni.redirectTo({
+									url: "../pethouse/home/index"
+								})
+							}else{
+								uni.redirectTo({
+									url: "../groomer/home/index"
+								})
+							}
 						}
 					}
 				})

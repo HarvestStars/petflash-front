@@ -13,37 +13,28 @@
 							{{ nick_name }}
 						</view>
 					</u-row>
-					<!--
-					<u-row>
-						<view>
-							<u-tag text="未认证" shape="circle" mode="dark" />
-						</view>
-					</u-row>
-					<u-row>
-						<view>
-							<u-tag text="未认证" shape="circle" mode="dark" />
-						</view>
-					</u-row>
-					-->
 				</u-col>
 			</u-row>
 		</view>
 		<view class="my">
 			<u-cell-group>
 				<view v-if="userType === 1">
-				<u-cell-item icon="map-fill" title="门店信息" @click="verifyClick(0)"></u-cell-item>
-				</view>
-				<view v-if="userType === 1">
-				<u-cell-item icon="account-fill" title="店主身份认证" :value="pethouse.owner" @click="verifyClick(1)"></u-cell-item>
+				<u-cell-item icon="map" title="门店信息" @click="verifyClick(0)"></u-cell-item>
 				</view>
 				<view v-if="userType === 2">
-				<u-cell-item icon="account-fill" title="身份认证" :value="groomer.groomer" @click="verifyClick(1)"></u-cell-item>
+				<u-cell-item icon="account" title="昵称" @click="verifyClick(1)"></u-cell-item>
 				</view>
 				<view v-if="userType === 1">
-				<u-cell-item icon="home-fill" title="门店认证" :value="pethouse.houseV" @click="verifyClick(2)"></u-cell-item>
+				<u-cell-item icon="fingerprint" title="店主身份认证" :value="pethouse.owner" @click="verifyClick(2)"></u-cell-item>
 				</view>
 				<view v-if="userType === 2">
-				<u-cell-item icon="cut" title="资质认证" :value="groomer.groomerV" @click="verifyClick(3)"></u-cell-item>
+				<u-cell-item icon="fingerprint" title="身份认证" :value="groomer.groomer" @click="verifyClick(2)"></u-cell-item>
+				</view>
+				<view v-if="userType === 1">
+				<u-cell-item icon="home" title="门店认证" :value="pethouse.houseV" @click="verifyClick(3)"></u-cell-item>
+				</view>
+				<view v-if="userType === 2">
+				<u-cell-item icon="cut" title="资质认证" :value="groomer.groomerV" @click="verifyClick(4)"></u-cell-item>
 				</view>
 				
 			</u-cell-group>
@@ -78,23 +69,28 @@
 				switch (e) {
 					case 0:
 						uni.navigateTo({
-							url: "../pethouse/location/index" // 门店位置信息
+							url: "../../pethouse/location/index" // 门店位置信息
 						})
 						break
 					case 1:
+						uni.navigateTo({
+							url: "../../groomer/info/index" // 美容师个人信息
+						})
+						break
+					case 2:
 						uni.navigateTo({
 							url: "../id_verify/index" // 身份证信息
 							
 						})
 						break
-					case 2:
-						uni.navigateTo({
-							url: "../pethouse/license_verify/index" // 门店环境信息
-						})
-						break
 					case 3:
 						uni.navigateTo({
-							url: "../certification_verify/index" // 美容师证书信息
+							url: "../../pethouse/license_verify/index" // 门店环境信息
+						})
+						break
+					case 4:
+						uni.navigateTo({
+							url: "../../groomer/certification_verify/index" // 美容师证书信息
 						})
 						break
 				}

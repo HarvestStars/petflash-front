@@ -10,12 +10,14 @@
 					<view class="page-box" v-if="current === 0">
 						<view v-if="orderList[0].length > 0">
 							<view class="order" v-for="res in orderList[0]" :key="res.id">
+								<!--
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
+								-->
 								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
@@ -64,30 +66,29 @@
 					<view class="page-box" v-if="current === 1">
 						<view v-if="orderList[1].length > 0">
 							<view class="order" v-for="res in orderList[1]" :key="res.id">
+								<!--
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
+								-->
 								<view class="item" v-for="item in res.goodsList">
-									<view class="left">
-										<image :src="item.goodsUrl" mode="aspectFill"></image>
-									</view>
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
 										<view class="delivery-time">{{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
+										<view class="delivery-time">接单时间 {{ item.matchTime }}</view>
 										<text>\n</text>
 										<view class="left">
-											<u-icon name="account-fill" :size="40" color="rgb(255, 173, 32)" 
+											<u-icon name="cut" :size="40" color="rgb(255, 173, 32)" 
 											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
 											</u-icon>
 											
 											<text class="worker-info" 
 											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											\t点击查看人员详情</text>
+											\t人员简介</text>
 										</view>
-										<view class="delivery-time">接单时间 {{ item.matchTime }}</view>
 										<text class="delivery-time">接单10分钟内可免责取消</text>
 									</view>
 								</view>
@@ -133,27 +134,28 @@
 					<view class="page-box" v-if="current === 2">
 						<view v-if="orderList[2].length > 0">
 							<view class="order" v-for="res in orderList[2]" :key="res.id">
+								<!--
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
 										<view class="store">{{ res.store }}</view>
-										<u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
+								-->
 								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
 									<view class="content">
 										<view class="title u-line-2">{{ item.title }}</view>
 										<view class="delivery-time">{{ item.startTime }} ~ {{ item.deliveryTime }}</view>
 										<text>\n</text>
 										<view class="left">
-											<u-icon name="account-fill" :size="40" color="rgb(255, 173, 32)" 
+											<u-icon name="cut" :size="40" color="rgb(255, 173, 32)" 
 											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
 											</u-icon>
 											
 											<text class="worker-info" 
 											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											\t点击查看人员详情</text>
+											\t人员简介</text>
 										</view>
 									</view>
 								</view>
@@ -170,7 +172,7 @@
 									<view class="evaluate btn" @click="sendComment(res.id)">写评论</view>
 									</view>
 									<view v-else>
-									<view class="exchange btn" >已评论</view>
+									<view class="exchange btn">已评论</view>
 									</view>
 								</view>
 							</view>

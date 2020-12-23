@@ -235,14 +235,14 @@
 									url: "../role_select/index"
 								})
 							}
-							if (this.$store.getters.requireRols.indexOf(userInfo.user_type) > -1) {
+							//if (this.$store.getters.requireRols.indexOf(userInfo.user_type) > -1)
+							if (data.data.user.user_type === 1) {
 								uni.redirectTo({
 									url: "../pethouse/home/index"
 								})
 							} else {
-								// todo  区分 pethouse 和 groomer
 								uni.redirectTo({
-									url: "../pethouse/home/index"
+									url: "../groomer/home/index"
 								})
 							}
 						},

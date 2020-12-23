@@ -37,40 +37,20 @@
 		}
 
 	}, {
-		"path": "pages/error/index_404",
-		"style": {
-			"navigationBarTitleText": "404",
-			"enablePullDownRefresh": false
-		}
-
-	}, {
 		"path": "pages/pethouse/order_history/index",
 		"style": {
 			"navigationBarTitleText": "订单",
 			"enablePullDownRefresh": false
 		}
 	}, {
-		"path": "pages/aw_map/index",
-		"style": {
-			"navigationBarTitleText": "地图",
-			"enablePullDownRefresh": false
-		}
-	}, {
-		"path": "pages/pethouse_order_detail/index",
-		"style": {
-			"navigationBarTitleText": "订单详情",
-			"enablePullDownRefresh": false
-		}
-
-	}, {
-		"path": "pages/user_info/index",
+		"path": "pages/common/user_info/index",
 		"style": {
 			"navigationBarTitleText": "用户信息",
 			"enablePullDownRefresh": false
 		}
 
 	} ,{
-		"path" : "pages/id_verify/index",
+		"path" : "pages/common/id_verify/index",
 		"style" :                                                                                    
 		{
 			"navigationBarTitleText": "身份认证",
@@ -79,7 +59,7 @@
             
     }
         ,{
-            "path" : "pages/certification_verify/index",
+            "path" : "pages/groomer/certification_verify/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "个人资质上传",
@@ -115,7 +95,7 @@
             
         }
         ,{
-            "path" : "pages/comment/index",
+            "path" : "pages/common/comment/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "评论",
@@ -128,6 +108,33 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "门店信息上传",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/groomer/home/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/groomer/home/home",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/groomer/info/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             
