@@ -1,6 +1,7 @@
 <template>
 	<u-form :model="form" ref="uForm">
 		<u-form-item :label="objLabel"><u-input placeholder="评价今后会以匿名的形式显示在ta的主页" v-model="form.content" /></u-form-item>
+		<u-rate :count="maxStars" v-model="favor"></u-rate>
 		<view v-if="form.content === null">
 			<u-button shape="circle">发送评论</u-button>
 			<u-button shape="circle" @click="cancel">返回</u-button>
@@ -19,6 +20,8 @@
 			return {
 				objLabel: "",
 				orderID: 0,
+				maxStars: 5,
+				favor:5,
 				commentType:"",
 				form: {
 					content: null,
@@ -51,7 +54,7 @@
 					data: {
 							order_id: this.orderID,
 							content: this.form.content,
-							favor: 5
+							favor: this.favor
 					},
 
 					success: () => {

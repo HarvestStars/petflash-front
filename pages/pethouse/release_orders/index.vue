@@ -1,6 +1,9 @@
 <template>
 	<view class="wrap">
 		<u-form :model="orderForm" ref="uForm" label-width="180">
+			<u-form-item label="门店区域">
+				<view style="margin-left: 200rpx;"> {{regionShow}} </view>
+			</u-form-item>
 			<!--  洗剪吹/遛狗 -->
 			<u-form-item label="起始时间" v-show="orderForm.orderTypeIndex !== 'PickUp'">
 				<u-input placeholder="请选择订单起始时间" v-model="orderForm.startTime" type="select" input-align="right" @click="startTimePickerShow = true" />
@@ -78,7 +81,8 @@
 		data() {
 			return {
 				city: this.$store.getters.userInfo.city,
-				region: this.$store.getters.userInfo.region,
+				region: this.$store.getters.userInfo.region ? this.$store.getters.userInfo.region : "",
+				regionShow: this.$store.getters.userInfo.region ? this.$store.getters.userInfo.region : "请前往门店信息中设置",
 				orderForm: {
 					orderTypeIndex: "WCB",
 					orderType: "WCB",

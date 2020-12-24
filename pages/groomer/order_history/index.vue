@@ -13,7 +13,7 @@
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - {{res.goodsList[0].pethouse.location }}</view>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - ({{res.goodsList[0].pethouse.region }}) {{res.goodsList[0].pethouse.location }}</view>
 									</view>
 									<view class="right">										
 										<text class="worker-info" 
