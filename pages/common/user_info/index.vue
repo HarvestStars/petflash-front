@@ -22,7 +22,7 @@
 				<u-cell-item icon="map" title="门店信息" @click="verifyClick(0)"></u-cell-item>
 				</view>
 				<view v-if="userType === 2">
-				<u-cell-item icon="account" title="昵称" @click="verifyClick(1)"></u-cell-item>
+				<u-cell-item icon="account" title="个人信息" @click="verifyClick(1)"></u-cell-item>
 				</view>
 				<view v-if="userType === 1">
 				<u-cell-item icon="fingerprint" title="店主身份认证" :value="pethouse.owner" @click="verifyClick(2)"></u-cell-item>
@@ -36,7 +36,7 @@
 				<view v-if="userType === 2">
 				<u-cell-item icon="cut" title="资质认证" :value="groomer.groomerV" @click="verifyClick(4)"></u-cell-item>
 				</view>
-				
+				<u-cell-item icon="setting" title="角色切换" @click="verifyClick(5)"></u-cell-item>
 			</u-cell-group>
 		</view>
 	</view>
@@ -46,7 +46,7 @@
 	export default {
 		data() {
 			return {
-				nick_name: this.$store.getters.userInfo.nick_name,
+				nick_name:"",
 				pethouse:{
 					owner: this.is_verified ? "已认证" : "未认证",
 					houseV: this.is_certified_house ? "已认证" : "未认证"
@@ -62,7 +62,13 @@
 			}
 		},
 		onShow: function(){
-			this.nick_name = this.$store.getters.userInfo.nick_name
+			if (this.$store.getters.userInfo.user_type === 1){
+				// 门店
+				this.nick_name = this.$store.getters.userInfo.nick_name ? this.$store.getters.userInfo.nick_name : "店名(信息中完善)";
+			}else{
+				// 美容师
+				this.nick_name = this.$store.getters.userInfo.nick_name ? this.$store.getters.userInfo.nick_name : "昵称(信息中完善)";
+			}
 		},
 		methods: {
 			verifyClick(e) {
@@ -91,6 +97,11 @@
 					case 4:
 						uni.navigateTo({
 							url: "../../groomer/certification_verify/index" // 美容师证书信息
+						})
+						break
+					case 5:
+						uni.redirectTo({
+							url: "../../role_select/index" // 身份切换
 						})
 						break
 				}

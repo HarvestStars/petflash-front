@@ -1,27 +1,58 @@
 <template>
 	<view style="background-color: rgb(248, 248, 248); padding: 14px;">
 		<u-row>
-			<u-col :span="6">
-				<view style="background-color: rgb(255, 255, 255);">
-					<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" 
-					upload-text="门面照" name="environment_front" :action="action" :auto-upload="true" :file-list="fileListFront" 
-					width="315rpx"></u-upload>
-				</view>
-			</u-col>
-			<u-col :span="6">
-				<view style="background-color: rgb(255, 255, 255);">
-					<u-upload ref="uUpload" max-count="1" @on-success="uploadBackSuccess" :header="uploadHeader" 
-					upload-text="店内环境" name="environment_inside" :action="action" :auto-upload="true" :file-list="fileListInside" 
-					width="315rpx"></u-upload>
-				</view>
-			</u-col>
+			<view v-if="frontPrefix">
+				<u-col :span="6">
+					<view style="background-color: rgb(255, 255, 255);">
+						<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" 
+						upload-text="门面照" name="environment_front" :action="action" :auto-upload="true" :file-list="fileListFront" 
+						width="315rpx"></u-upload>
+					</view>
+				</u-col>
+			</view>
+			<view v-else>
+				<u-col :span="6">
+					<view style="background-color: rgb(255, 255, 255);">
+						<u-upload ref="uUpload" max-count="1" @on-success="uploadFrontSuccess" :header="uploadHeader" 
+						upload-text="门面照" name="environment_front" :action="action" :auto-upload="true" 
+						width="315rpx"></u-upload>
+					</view>
+				</u-col>
+			</view>
+			<view v-if="insidePrefix">
+				<u-col :span="6">
+					<view style="background-color: rgb(255, 255, 255);">
+						<u-upload ref="uUpload" max-count="1" @on-success="uploadBackSuccess" :header="uploadHeader" 
+						upload-text="店内环境" name="environment_inside" :action="action" :auto-upload="true" :file-list="fileListInside" 
+						width="315rpx"></u-upload>
+					</view>
+				</u-col>
+			</view>
+			<view v-else>
+				<u-col :span="6">
+					<view style="background-color: rgb(255, 255, 255);">
+						<u-upload ref="uUpload" max-count="1" @on-success="uploadBackSuccess" :header="uploadHeader" 
+						upload-text="店内环境" name="environment_inside" :action="action" :auto-upload="true" 
+						width="315rpx"></u-upload>
+					</view>
+				</u-col>
+			</view>
 		</u-row>
-		
-		<view class="img-upload">
-			<u-upload max-count="1" ref="uUpload-Permiss" @on-success="uploadPermissSuccess" :header="uploadHeader" 
-			upload-text="营业执照" name="license_front" :action="action" :auto-upload="true" :file-list="fileListLicense" 
-			width="630rpx" height="500rpx"
-			></u-upload>
+		<view v-if="licensePrefix">
+			<view class="img-upload">
+				<u-upload max-count="1" ref="uUpload-Permiss" @on-success="uploadPermissSuccess" :header="uploadHeader" 
+				upload-text="营业执照" name="license_front" :action="action" :auto-upload="true" :file-list="fileListLicense" 
+				width="630rpx" height="500rpx"
+				></u-upload>
+			</view>
+		</view>
+		<view v-else>
+			<view class="img-upload">
+				<u-upload max-count="1" ref="uUpload-Permiss" @on-success="uploadPermissSuccess" :header="uploadHeader" 
+				upload-text="营业执照" name="license_front" :action="action" :auto-upload="true" 
+				width="630rpx" height="500rpx"
+				></u-upload>
+			</view>
 		</view>
 		<u-button type="primary" @click="submit">认证信息</u-button>
 	</view>
@@ -55,7 +86,11 @@
 				uploadHeader: {
 					"content-type": "application/json",
 					Authorization: `${this.$store.getters.token.token_type} ${this.$store.getters.token.access_token}`
-				}
+				},
+				
+				frontPrefix: this.$store.getters.userInfo.environment_front != "" ? true : false,
+				insidePrefix: this.$store.getters.userInfo.environment_inside != "" ? true : false,
+				licensePrefix: this.$store.getters.userInfo.license != "" ? true : false
 			}
 		},
 		methods: {

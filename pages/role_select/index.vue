@@ -41,13 +41,24 @@
 					success: ({data}) => {
 						console.log(data.data, this.$store)
 						if (data.code === 0) {
+							let userInfo = Object.assign(this.$store.getters.userInfo, data.data.user_info)
+							//this.$store.dispatch("user/updateUserInfo", userInfo)
 							this.$store.dispatch("user/setToken", data.data.token)
-							this.$store.dispatch("user/updateUserInfo", data.data.user)
 							if (role === "PetHouse"){
+								let userInfoWithNewType = Object.assign(userInfo, {
+									user_type: 1,
+								})
+								this.$store.dispatch("user/updateUserInfo", userInfoWithNewType)
+								console.log("门店信息缓存表",this.$store.getters.userInfo)
 								uni.redirectTo({
 									url: "../pethouse/home/index"
 								})
 							}else{
+								let userInfoWithNewType = Object.assign(userInfo, {
+									user_type: 2,
+								})
+								this.$store.dispatch("user/updateUserInfo", userInfoWithNewType)
+								console.log("美容师信息缓存表",this.$store.getters.userInfo)
 								uni.redirectTo({
 									url: "../groomer/home/index"
 								})

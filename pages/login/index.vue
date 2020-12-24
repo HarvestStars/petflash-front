@@ -240,7 +240,8 @@
 								uni.redirectTo({
 									url: "../pethouse/home/index"
 								})
-							} else {
+							}
+							if (data.data.user.user_type === 2) {
 								uni.redirectTo({
 									url: "../groomer/home/index"
 								})
