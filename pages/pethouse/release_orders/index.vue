@@ -77,6 +77,8 @@
 	export default {
 		data() {
 			return {
+				city: this.$store.getters.userInfo.city,
+				region: this.$store.getters.userInfo.region,
 				orderForm: {
 					orderTypeIndex: "WCB",
 					orderType: "WCB",
@@ -232,7 +234,7 @@
 				})
 			},
 			handleConfirm() {
-				console.log("handleConfirm", this.$store.getters.token, this.orderForm)
+				console.log("handleConfirm", this.$store.getters, this.orderForm)
 				uni.request({
 					url: `${api.baseUrl}/api/v1/order/pethouse/create/?order_type=${this.orderForm.orderType}`,
 					method: "POST",
@@ -246,7 +248,9 @@
 						finished_at: moment(new Date(this.orderForm.endTime)).utc().valueOf(),
 						service_items: this.serviceItems,
 						basic: parseFloat(this.orderForm.basePay.valueOf()),
-						commission: parseInt(this.orderForm.deductPercentage.valueOf())
+						commission: parseInt(this.orderForm.deductPercentage.valueOf()),
+						city: this.city,
+						region: this.region
 					},
 					success: ({data}) => {
 							uni.redirectTo({
