@@ -9,7 +9,7 @@
 	"pages": [{
 		"path": "pages/login/index",
 		"style": {
-			"navigationBarTitleText": "登录",
+			"navigationBarTitleText": "",
 			"enablePullDownRefresh": false,
 			"animationType": "fade-in",
 			"animationDuration": 300
@@ -162,7 +162,7 @@
 		// "navigationStyle": "custom", // 去掉默认的导航栏
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#007AFF",
-		"backgroundColor": "#FFFFFF"
+		"navigationBarBackgroundColor": "#000000",
+		"backgroundColor": "#ffffff"
 	}
 }

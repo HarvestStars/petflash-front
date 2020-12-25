@@ -9,19 +9,19 @@
 		</swiper>
 		<form class="login-form">
 			<view :class="phoneNumberClass">
-				<view class="title">
+				<view class="cu-capsule" style="padding: 0 30upx;">
 					<!-- <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 32 32" width="22" height="22" style="fill: rgb(16, 16, 16);">
 						<path d="M8 5.333v21.333h16v-21.333h-16zM6.667 2.667h18.667c0.736 0 1.333 0.597 1.333 1.333v0 24c0 0.736-0.597 1.333-1.333 1.333v0h-18.667c-0.736 0-1.333-0.597-1.333-1.333v0-24c0-0.736 0.597-1.333 1.333-1.333v0zM16 22.667c0.736 0 1.333 0.597 1.333 1.333s-0.597 1.333-1.333 1.333v0c-0.736 0-1.333-0.597-1.333-1.333s0.597-1.333 1.333-1.333v0z"></path>
 					</svg> -->
-					<FontAwesome type="fas fa-mobile-alt" size="40" color="rgb(16, 16, 16)" fw></FontAwesome>
+					<FontAwesome type="fas fa-mobile-alt" size="40" color="rgb(255, 255, 255)" fw></FontAwesome>
 				</view>
 				<input placeholder="请输入手机号码" name="input" type="text" maxlength="11" @input="handlePhoneNumberInput" :value="loginForm.phoneNumber"
 				 @focus="handleFocus"></input>
 				<view class="cu-capsule radius" style="margin-right: 20px;">
-					<view class='cu-tag bg-blue '>
+					<view class="cu-tag bg-white" style="background-color: #666666; color: #FFFFFF;">
 						+86
 					</view>
-					<view class="cu-tag line-blue">
+					<view class="cu-tag line-white" style="background-color: #FFFFFF; color: #666666;">
 						中国大陆
 					</view>
 				</view>
@@ -31,32 +31,34 @@
 
 			<view :class="verifyCodeClass">
 				<!-- <view :class="verifyCodeClass  style="margin-top: 20px;""> -->
-				<view class="title">
+				<view class="cu-capsule" style="padding: 0 30upx;">
 					<!-- <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 32 32" width="22" height="22" style="fill: rgb(16, 16, 16);">
 						<path d="M16 1.333l10.956 2.435c0.602 0.137 1.044 0.668 1.044 1.301v0 13.316c-0 2.764-1.402 5.201-3.534 6.638l-0.028 0.018-8.437 5.625-8.437-5.625c-2.16-1.455-3.562-3.891-3.563-6.655v-13.317c0-0.634 0.442-1.164 1.035-1.3l0.009-0.002 10.956-2.435zM16 4.065l-9.333 2.073v12.247c0 1.843 0.935 3.467 2.356 4.425l0.019 0.012 6.959 4.64 6.959-4.64c1.44-0.97 2.374-2.594 2.375-4.436v-12.248l-9.333-2.072zM16 9.333c0 0 0.001 0 0.001 0 1.473 0 2.667 1.194 2.667 2.667 0 0.982-0.531 1.84-1.321 2.303l-0.013 0.007-0.001 5.691h-2.667v-5.691c-0.803-0.47-1.333-1.328-1.333-2.309 0-1.473 1.194-2.667 2.667-2.667v0z"></path>
 					</svg> -->
 
-					<FontAwesome type="fas fa-user-lock" size="40" color="rgb(16, 16, 16)" fw></FontAwesome>
+					<FontAwesome type="fas fa-user-lock" size="40" color="rgb(255, 255, 255)" fw></FontAwesome>
 				</view>
 				<input placeholder="请输入验证码" name="input" type="number" maxlength="6" @input="handleVerifyCodeInput" :value="loginForm.verifyCode"
 				 @focus="handleFocus"></input>
-				<button class='cu-btn bg-green shadow' style="margin-right: 20px; height: 30px;" v-if="!disableSendVerifyCode"
+				<button class='cu-btn shadow' style="background-color: #666666; color: #FFFFFF; margin-right: 20px; height: 30px;" v-if="!disableSendVerifyCode"
 				 @click="handleSendVerifyCode">验证码</button>
-				<button class='cu-btn bg-green shadow' style="margin-right: 20px; height: 30px;" v-else disabled>已经发送{{disableSendVerifyInSecs}}重试</button>
+				<button class='cu-btn shadow' style="margin-right: 20px; height: 30px;" v-else disabled>已经发送{{disableSendVerifyInSecs}}重试</button>
 			</view>
 
 			<br />
+			<br />
+			<br />
 			<view>
-				<button type="primary" class="login-btn" @click="handleLogin">登录</button>
+				<button class="login-btn" @click="handleLogin">登录</button>
 			</view>
 		</form>
 	</view>
 </template>
 
 <script>
-	import image1 from "../../asserts/v2_q96xt0.jpg"
-	import image2 from "../../asserts/v2_q96xua.jpg"
-	import image3 from "../../asserts/v2_q96xxz.jpg"
+	import image1 from "../../asserts/logo.png"
+	import image2 from "../../asserts/logo.png"
+	import image3 from "../../asserts/logo.png"
 
 	import utils from "../../utils/index.js"
 	import FontAwesome from '../../components/Am-FontAwesome/index.vue'
@@ -84,7 +86,7 @@
 				direction: '',
 				loginForm: {
 					phoneNumber: '',
-					verifyCode: '1234'
+					verifyCode: ''
 				},
 				phoneNumberWarning: false,
 				verifyCodeWarning: false,
@@ -93,7 +95,7 @@
 				validateFailedClass: ['input-warning', 'shake'],
 				validatePassClass: ['input-success'],
 				disableSendVerifyCode: false,
-				disableSendVerifyInSecs: 10,
+				disableSendVerifyInSecs: 60,
 				verifyCodeTimer: null
 			}
 		},
@@ -273,8 +275,12 @@
 
 	.container {
 		/* padding: 20px; */
-		font-size: 14px;
-		line-height: 24px;
+		position: fixed;
+		height: 100%;
+		width: 100%;
+		/*font-size: 14px;
+		line-height: 24px;*/
+		background-color: rgba(0, 0, 0, 1.0);
 	}
 
 	.login-form {
@@ -287,7 +293,7 @@
 	.input-warning,
 	.input-success {
 		height: 55px;
-		background-color: rgb(245, 245, 245);
+		background-color: rgb(51, 51, 51);
 		border: none;
 		color: rgb(255, 255, 255);
 		border-radius: 50px;
@@ -322,9 +328,9 @@
 		height: 55px;
 		line-height: 55px;
 		vertical-align: middle;
-		background-color: rgba(16, 16, 16, 0.7);
+		background-color: rgba(255, 189, 89, 1.0);
 		border: none;
-		color: rgb(255, 255, 255);
+		color: rgb(0, 0, 0);
 		border-radius: 50px;
 		font-size: 16px;
 		padding: 0px;
