@@ -10,36 +10,50 @@
 					<view class="page-box" v-if="current === 0">
 						<view v-if="orderList[0].length > 0">
 							<view class="order" v-for="res in orderList[0]" :key="res.id">
-								<!--
-								<view class="top">
-									<view class="left">
-										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-									</view>
-									<view class="right">{{ res.deal }}</view>
-								</view>
-								-->
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
-									<view class="content">
-										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time"> 时段: {{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
-									</view>
-								</view>
-								<view class="total">
-									<text>
-										<text v-if="res.goodsList[0].basic > 0">
-										底薪:\t
-										<text class="total-price" space="ensp">
-										￥{{ res.goodsList[0].basic }}
-										</text>
-										</text>
-										<text v-if="res.goodsList[0].commission > 0">
-										\t提成:\t
-										<text class="total-price">
-											{{ res.goodsList[0].commission }}%
-										</text>
-										</text>
-									</text>
-								</view>
+								<u-row>
+									<u-col span="8">
+										<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+											<view class="content">
+												<u-button slot="center" :type="'warning'" size="mini">{{ item.title }}</u-button>
+												<view><text>\n</text></view>
+												
+												<view class="start-time"> 
+												<u-button shape="circle" slot="center" :type="'success'" size="mini">开始时间</u-button>
+												<text>\t</text>
+												{{ item.startTime }}
+												</view>
+												
+												<view class="finish-time"> 
+												<u-button shape="circle" slot="center" :type="'error'" size="mini">结束时间</u-button>
+												<text>\t</text>
+												{{ item.deliveryTime }}
+												</view>
+											</view>
+										</view>
+									</u-col>
+									
+									<u-col span="4">
+										<view class="total">
+											<text>
+												<text v-if="res.goodsList[0].basic > 0">
+												\t底薪:\t
+												<text class="total-price" space="ensp">
+												{{ res.goodsList[0].basic }}
+												</text>
+												元
+												</text>
+												\n
+												<text v-if="res.goodsList[0].commission > 0">
+												\t提成:\t
+												<text class="total-price">
+													{{ res.goodsList[0].commission }}
+												</text>
+												%
+												</text>
+											</text>
+										</view>
+									</u-col>
+								</u-row>
 								<view class="bottom">
 									<view class="more">
 									</view>
@@ -66,48 +80,70 @@
 					<view class="page-box" v-if="current === 1">
 						<view v-if="orderList[1].length > 0">
 							<view class="order" v-for="res in orderList[1]" :key="res.id">
-								<!--
 								<view class="top">
 									<view class="left">
-										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
+										<u-button :type="'warning'" size="mini">{{ res.goodsList[0].title }}</u-button>
 									</view>
-									<view class="right">{{ res.deal }}</view>
+									<view class="right"
+									@click="GetGroomerAbstract(res.goodsList[0].groomer.nickName, res.goodsList[0].groomer.avartarURL, res.goodsList[0].groomer.favor, res.goodsList[0].groomer.isVerified, res.goodsList[0].groomer.isCertifiedGroomer, res.goodsList[0].groomer.phone, res.goodsList[0].groomer.qualification)"> 
+									<u-icon name="cut"></u-icon>
+									人员简介
+									</view>
 								</view>
-								-->
-								<view class="item" v-for="item in res.goodsList">
-									<view class="content">
-										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time">{{ item.deliveryTime }} ~ {{ item.deliveryTime }}</view>
-										<view class="delivery-time">接单时间 {{ item.matchTime }}</view>
-										<text>\n</text>
-										<view class="left">
-											<u-icon name="cut" :size="40" color="rgb(255, 173, 32)" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											</u-icon>
-											
-											<text class="worker-info" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											\t人员简介</text>
+								
+								<u-row>
+									<u-col span="8">
+										<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+											<view class="content">
+												<view><text>\n</text></view>
+												
+												<view class="start-time"> 
+												<u-button shape="circle" slot="center" :type="'success'" size="mini">开始时间</u-button>
+												<text>\t</text>
+												{{ item.startTime }}
+												</view>
+												
+												<view class="finish-time"> 
+												<u-button shape="circle" slot="center" :type="'error'" size="mini">结束时间</u-button>
+												<text>\t</text>
+												{{ item.deliveryTime }}
+												</view>
+												<view><text>\n</text></view>
+												
+												<view class="finish-time">
+												<u-button shape="square" slot="center" :type="'primary'" size="mini">接单时间</u-button>
+												<text>\t</text>
+												{{ item.matchTime }}
+												<view>
+													<text style="font-size: 22rpx; color: #C0C0C0;">\t接单10分钟内可以无责任取消</text>
+												</view>
+												</view>													
+											</view>
 										</view>
-										<text class="delivery-time">接单10分钟内可免责取消</text>
-									</view>
-								</view>
-								<view class="total">
-									<text>
-										<text v-if="res.goodsList[0].basic > 0">
-										底薪:\t
-										<text class="total-price" space="ensp">
-										￥{{ res.goodsList[0].basic }}
-										</text>
-										</text>
-										<text v-if="res.goodsList[0].commission > 0">
-										\t提成:\t
-										<text class="total-price">
-											{{ res.goodsList[0].commission }}%
-										</text>
-										</text>
-									</text>
-								</view>
+									</u-col>
+									
+									<u-col span="4">
+										<view class="total">
+											<text>
+												<text v-if="res.goodsList[0].basic > 0">
+												\t底薪:\t
+												<text class="total-price" space="ensp">
+												{{ res.goodsList[0].basic }}
+												</text>
+												元
+												</text>
+												\n
+												<text v-if="res.goodsList[0].commission > 0">
+												\t提成:\t
+												<text class="total-price">
+													{{ res.goodsList[0].commission }}
+												</text>
+												%
+												</text>
+											</text>
+										</view>
+									</u-col>
+								</u-row>
 								<view class="bottom">
 									<view class="exchange btn" @click="DenyAction(res.id, res.goodsList[0].matchTime)">取消该人员</view>
 									<view class="exchange btn" @click="CancelRunningOrder(res.id, res.goodsList[0].matchTime)">取消订单</view>
@@ -134,37 +170,48 @@
 					<view class="page-box" v-if="current === 2">
 						<view v-if="orderList[2].length > 0">
 							<view class="order" v-for="res in orderList[2]" :key="res.id">
-								<!--
 								<view class="top">
 									<view class="left">
-										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.store }}</view>
+										<u-button :type="'warning'" size="mini">{{ res.goodsList[0].title }}</u-button>
 									</view>
-									<view class="right">{{ res.deal }}</view>
+									<view class="right"
+									@click="GetGroomerAbstract(res.goodsList[0].groomer.nickName, res.goodsList[0].groomer.avartarURL, res.goodsList[0].groomer.favor, res.goodsList[0].groomer.isVerified, res.goodsList[0].groomer.isCertifiedGroomer, res.goodsList[0].groomer.phone, res.goodsList[0].groomer.qualification)"> 
+									<u-icon name="cut"></u-icon>
+									人员简介
+									</view>
 								</view>
-								-->
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
-									<view class="content">
-										<view class="title u-line-2">{{ item.title }}</view>
-										<view class="delivery-time">{{ item.startTime }} ~ {{ item.deliveryTime }}</view>
-										<text>\n</text>
-										<view class="left">
-											<u-icon name="cut" :size="40" color="rgb(255, 173, 32)" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											</u-icon>
-											
-											<text class="worker-info" 
-											@click="GetGroomerAbstract(item.groomer.nickName, item.groomer.avartarURL, item.groomer.favor, item.groomer.isVerified, item.groomer.isCertifiedGroomer, item.groomer.phone, item.groomer.qualification)">
-											\t人员简介</text>
+								
+								<u-row>
+									<u-col span="8">
+										<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+											<view class="content">
+												<view><text>\n</text></view>
+												
+												<view class="start-time"> 
+												<u-button shape="circle" slot="center" :type="'success'" size="mini">开始时间</u-button>
+												<text>\t</text>
+												{{ item.startTime }}
+												</view>
+												
+												<view class="finish-time"> 
+												<u-button shape="circle" slot="center" :type="'error'" size="mini">结束时间</u-button>
+												<text>\t</text>
+												{{ item.deliveryTime }}
+												</view>										
+											</view>
 										</view>
-									</view>
-								</view>
-								<view class="total">
-									合计:
-									<text class="total-price">
-										￥{{ res.goodsList[0].totalPay }}
-									</text>
-								</view>
+									</u-col>
+									
+									<u-col span="4">
+										<view class="total" style="margin-top: 60rpx;">
+											合计:
+											<text class="total-price">
+												￥{{ res.goodsList[0].totalPay }}
+											</text>
+										</view>
+									</u-col>
+								</u-row>
+								
 								<view class="bottom">
 									<view class="more">
 									</view>
@@ -263,7 +310,7 @@
 					// 说明service items 为空，为普通订单
 					strs.push(order.orderServices[0])
 				}
-				return strs.join("/")
+				return strs.join("、")
 			},
 			
 			generateQueryParam(status) {
@@ -602,7 +649,8 @@
 
 		.item {
 			display: flex;
-			margin: 20rpx 0 0;
+			justify-content: space-between;
+			/*margin: 10rpx 0 0;*/
 
 			.left {
 				margin-right: 20rpx;
@@ -626,8 +674,18 @@
 					color: $u-tips-color;
 				}
 
-				.delivery-time {
-					color: #e5d001;
+				.start-time {
+					color: #c0c0c0;
+					font-size: 24rpx;
+				}
+				
+				.finish-time {
+					color: #292421;
+					font-size: 24rpx;
+				}
+				
+				.match-time {
+					color: #292421;
 					font-size: 24rpx;
 				}
 				
@@ -655,12 +713,13 @@
 		}
 
 		.total {
-			margin-top: 20rpx;
+			margin-top: 100rpx;
 			text-align: right;
 			font-size: 24rpx;
 
 			.total-price {
-				font-size: 32rpx;
+				font-size: 30rpx;
+				color: #ff9912;
 			}
 		}
 

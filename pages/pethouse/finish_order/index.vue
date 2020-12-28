@@ -1,13 +1,20 @@
 <template>
-	<u-form :model="form" ref="uForm">
-		<u-form-item label="总价"><u-input placeholder="单位(元)" v-model="form.totalPrice" /></u-form-item>
-		<view v-if="form.totalPrice === null">
-			<u-button shape="circle">确认完成</u-button>
-		</view>
-		<view v-else>
-			<u-button shape="circle" type="warning" @click="confirmSync">确认完成</u-button>
-		</view>
-	</u-form>
+	<view class="wrap">
+		<u-form :model="form" ref="uForm" label-width="180">
+			<u-form-item label="总价" style="font-size: 35rpx;">
+				<u-input placeholder="(元)" input-align="right" v-model="form.totalPrice" />
+			</u-form-item>
+			<view>
+			<text>\n</text>
+			</view>
+			<view v-if="form.totalPrice === null">
+				<u-button shape="margin-top" type="default" style="color: #C0C0C0;">填入金额后即可确认</u-button>
+			</view>
+			<view v-else>
+				<u-button class="margin-top" type="warning" @click="confirmSync">确认完成</u-button>
+			</view>
+		</u-form>
+	</view>
 </template>
 
 <script>
@@ -103,5 +110,8 @@
 </script>
 
 <style>
-
+	.wrap {
+		padding: 30rpx;
+		background-color: #FFFFFF;
+	}
 </style>

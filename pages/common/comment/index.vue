@@ -4,11 +4,9 @@
 		<u-rate :count="maxStars" v-model="favor"></u-rate>
 		<view v-if="form.content === null">
 			<u-button shape="circle">发送评论</u-button>
-			<u-button shape="circle" @click="cancel">返回</u-button>
 		</view>
 		<view v-else>
 			<u-button shape="circle" type="warning" @click="confirm">发送评论</u-button>
-			<u-button shape="circle" @click="cancel">返回</u-button>
 		</view>
 	</u-form>
 </template>

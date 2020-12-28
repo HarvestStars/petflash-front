@@ -1,13 +1,13 @@
 <template>
 	<view class="background">		
 		<view class="wrap">
-			<u-row gutter="16">
+			<u-row>
 				<u-col span="3">
 					<view style="width: 100rpx;">
 						<u-image width="100%" height="100rpx" shape="circle" :src="avartarURL"></u-image>
 					</view>
 				</u-col>
-				<u-col span="8">
+				<u-col span="9">
 					<u-row>
 						<view>
 							{{nickName}}
@@ -18,16 +18,16 @@
 					</view>
 					<u-row>
 						<view v-if="isVerified">
-							<u-tag text="已实名认证" shape="circle" mode="dark" />
+							<u-tag text="已实名认证" type="success" shape="square" mode="dark" />
 						</view>
 						<view v-else>
-							<u-tag text="未实名认证" color="rgb(117, 117, 117)" shape="circle" mode="plain" />
+							<u-tag text="未实名认证" type="info" shape="square" color="rgb(117, 117, 117)" mode="light" />
 						</view>
-						<view v-if="isCertified">
+						<view v-if="isCertifiedHouse">
 							<u-tag text="已营业资质认证" shape="circle" mode="dark" />
 						</view>
 						<view v-else>
-							<u-tag text="营业资质未审核" color="rgb(117, 117, 117)" shape="circle" mode="plain" />
+							<u-tag text="未审核营业资质" type="info" shape="square" color="rgb(117, 117, 117)" mode="light" />
 						</view>
 					</u-row>
 				</u-col>
@@ -58,7 +58,7 @@
 		},
 		
 		onLoad: function(option) {
-			this.nickName = option.nick_name;
+			this.nickName = option.nick_name ? option.nick_name : "用户暂无昵称";
 			if (option.favor === "0"){
 				this.favor = "暂无";
 			}else{

@@ -1,11 +1,31 @@
 <template>
 	<view class="role-select-container">
-		<view class="padding" style="height: 100%;">
+		<view class="padding" style="height: 100%;">			
 			<view class="grid margin-bottom text-center col-3">
-				<button class="padding role role-top" @click="handleRoleSelect(roles[0])">我要招人</button>
+				<button class="padding role role-top" style="background-color: #333333"
+				@click="handleRoleSelect(roles[0])">
+				<view>
+					<view>
+					<text class="role-text-top">企业版</text>
+					</view>
+					<view style="line-height: 12rpx;">
+					<text class="role-text-content">\n寻找优秀的员工</text>
+					</view>
+				</view>
+				</button>
 			</view>
 			<view class="grid margin-bottom text-center col-3">
-				<button class="padding role role-top" @click="handleRoleSelect(roles[1])">我要找工作</button>
+				<button class="padding role role-top" style="color: #333333; background-color: #ffbd59"
+				@click="handleRoleSelect(roles[1])">
+				<view>
+					<view>
+					<text class="role-text-top">个人版</text>
+					</view>
+					<view style="line-height: 12rpx;">
+					<text class="role-text-content">\n遇见心仪的工作</text>
+					</view>
+				</view>
+				</button>
 			</view>
 		</view>
 	</view>
@@ -13,9 +33,13 @@
 
 <script>
 	import api from "../../api/index.js"
+	import logo from "../../asserts/logo.png"
 	export default {
 		data() {
-			return {}
+			return {
+				imageURL: logo,
+				
+			}
 		},
 		computed: {
 			roles() {
@@ -83,11 +107,27 @@
 
 	.role {
 		font-size: 20px;
+		color: #ffbd59;
 		text-align: center;
 		line-height: 6vh;
 		vertical-align: middle;
-		height: 10vh;
+		height: 15vh;
+		width: 30vh;
 		border-style: solid;
-		border-width: 1px;
+		border-width: 0px;
+	}
+	
+	.role::after{ 
+		border: none;
+	}
+	
+	.role-text-top{
+		line-height: 30rpx;
+		font-weight: bold;
+	}
+	.role-text-content{
+		font-size: 15px;
+		font-weight: normal;
 	}
 </style>
+

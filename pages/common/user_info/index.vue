@@ -100,7 +100,7 @@
 						})
 						break
 					case 5:
-						uni.redirectTo({
+						uni.reLaunch({
 							url: "../../role_select/index" // 身份切换
 						})
 						break

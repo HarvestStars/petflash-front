@@ -54,7 +54,7 @@
 				></u-upload>
 			</view>
 		</view>
-		<u-button type="primary" @click="submit">认证信息</u-button>
+		<u-button type="warning" @click="submit">确认提交</u-button>
 	</view>
 </template>
 

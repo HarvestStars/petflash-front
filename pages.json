@@ -9,7 +9,7 @@
 	"pages": [{
 		"path": "pages/login/index",
 		"style": {
-			"navigationBarTitleText": "",
+			"navigationBarBackgroundColor": "#000000",
 			"enablePullDownRefresh": false,
 			"animationType": "fade-in",
 			"animationDuration": 300
@@ -17,6 +17,7 @@
 	}, {
 		"path": "pages/role_select/index",
 		"style": {
+			
 			"navigationBarTitleText": "身份选择",
 			"enablePullDownRefresh": false
 		}
@@ -161,8 +162,8 @@
 	"globalStyle": {
 		// "navigationStyle": "custom", // 去掉默认的导航栏
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#000000",
-		"backgroundColor": "#ffffff"
+		//"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#ff9912",
+		"backgroundColor": "#000000"
 	}
 }

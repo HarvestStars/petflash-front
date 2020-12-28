@@ -1,14 +1,13 @@
 <template>
-	<view style="padding: 24rpx;">
-		</u-field>
-		<u-field v-model="nick_name" label="门店名称" placeholder="请输入">
-		</u-field>
-		<view>
-			<view class="u-demo-wrap">
-				<view class="u-demo-title">区域选择</view>
-				<view class="u-demo-area">
-					<view>{{ input ? input : '地区选择' }}</view>
-				</view>
+	<view class="wrap">
+		<u-form ref="uForm" label-width="180">
+			<u-form-item label="门店名称">
+				<u-input v-model="nick_name" placeholder="请输入" input-align="right"></u-input>
+			</u-form-item>
+
+
+			<u-form-item label="区域选择" >
+				<u-input placeholder="请选择门店所在区域" v-model="input" type="select" input-align="right" @click="show = true" />
 				<u-picker
 					mode="region" 
 					v-model="show" 
@@ -16,13 +15,15 @@
 					:area-code='["31", "3101", "310101"]' 
 					:params="params"
 					></u-picker>
+			</u-form-item>
+			<u-form-item label="具体地址">
+				<u-input v-model="address" placeholder="请输入" input-align="right"></u-input>
+			</u-form-item>
+			<text>\n</text>
+			<view>
+				<u-button type="warning" @click="submit">提交</u-button>
 			</view>
-			<u-button @click="show = true">地区选择</u-button>
-		</view>
-		</u-field>
-		<u-field v-model="address" label="具体地址" placeholder="请输入">
-		</u-field>
-		<u-button type="primary" @click="submit">提交</u-button>
+		</u-form>
 	</view>
 </template>
 
@@ -95,5 +96,9 @@
 </script>
 
 <style>
-
+	.wrap {
+		padding: 30rpx;
+		font-size: 30rpx;
+		background-color: #FFFFFF;
+	}
 </style>

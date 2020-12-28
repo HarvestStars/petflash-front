@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<u-form :model="orderForm" ref="uForm" label-width="180">
 			<u-form-item label="门店区域">
-				<view style="margin-left: 200rpx;"> {{regionShow}} </view>
+				<u-button slot="right" :type="regionFlag ? 'success' : 'warning'" size="mini">{{regionShow}}</u-button>
 			</u-form-item>
 			<!--  洗剪吹/遛狗 -->
 			<u-form-item label="起始时间" v-show="orderForm.orderTypeIndex !== 'PickUp'">
@@ -18,7 +18,8 @@
 			<!-- 洗剪吹 -->
 			<u-form-item label="订单属性" v-show="orderForm.orderTypeIndex === 'WCB'">
 				<u-checkbox-group @change="checkboxGroupChange">
-					<u-checkbox v-model="item.checked" v-for="(item, index) in  washCutBlowCheckboxList" :key="index" :name="item.name">
+					<u-checkbox v-model="item.checked" active-color="green" 
+					v-for="(item, index) in  washCutBlowCheckboxList" :key="index" :name="item.name">
 						{{ item.name }}
 					</u-checkbox>
 				</u-checkbox-group>
@@ -30,13 +31,11 @@
 					</u-radio>
 				</u-radio-group>
 			</u-form-item>
-			<u-form-item label="底薪" v-show="orderForm.orderTypeIndex === 'WCB' && [0, 2].indexOf(orderForm.payWay) > -1">
+			<u-form-item label="底薪(元)" v-show="orderForm.orderTypeIndex === 'WCB' && [0, 2].indexOf(orderForm.payWay) > -1">
 				<u-input placeholder="0" v-model.number="orderForm.basePay" type="number" input-align="right" />
-				<view style="margin-left: 10rpx;">元</view>
 			</u-form-item>
-			<u-form-item label="提成" v-show="orderForm.orderTypeIndex === 'WCB' && [1, 2].indexOf(orderForm.payWay) > -1">
+			<u-form-item label="提成(%)" v-show="orderForm.orderTypeIndex === 'WCB' && [1, 2].indexOf(orderForm.payWay) > -1">
 				<u-input placeholder="0" v-model.number="orderForm.deductPercentage" type="number" input-align="right" />
-				<view style="margin-left: 10rpx;">%</view>
 			</u-form-item>
 
 			<!-- 遛狗 -->
@@ -68,7 +67,7 @@
 				<u-input placeholder="请选择上车时间" v-model="orderForm.getOnTime" type="select" input-align="right" @click="getOnTimeShow = true" />
 				<u-picker mode="time" v-model="getOnTimeShow" :params="params" @confirm="getOnTimeConfirm"></u-picker>
 			</u-form-item>
-			<button class="margin-top" type="primary" @click="handleConfirm">确定</button>
+			<u-button class="margin-top" type="warning" @click="handleConfirm">确定发布</u-button>
 		</u-form>
 	</view>
 </template>
@@ -82,7 +81,8 @@
 			return {
 				city: this.$store.getters.userInfo.city,
 				region: this.$store.getters.userInfo.region ? this.$store.getters.userInfo.region : "",
-				regionShow: this.$store.getters.userInfo.region ? this.$store.getters.userInfo.region : "请前往门店信息中设置",
+				regionShow: this.$store.getters.userInfo.region ? this.$store.getters.userInfo.region : "在门店信息中设置",
+				regionFlag: this.$store.getters.userInfo.region ? true : false,
 				orderForm: {
 					orderTypeIndex: "WCB",
 					orderType: "WCB",
