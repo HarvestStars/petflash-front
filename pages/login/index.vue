@@ -50,7 +50,7 @@
 <script>	
 	import image1 from "../../asserts/logo.png"
 	import image2 from "../../asserts/logo2.png"
-	import image3 from "../../asserts/logo3.png"
+	import image3 from "../../asserts/logo3.jpg"
 
 	import utils from "../../utils/index.js"
 	import FontAwesome from '../../components/Am-FontAwesome/index.vue'
