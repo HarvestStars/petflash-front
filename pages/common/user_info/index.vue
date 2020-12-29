@@ -58,7 +58,7 @@
 				},
 				
 				/*src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',*/
-				src: 'http://127.0.0.1:8080/api/v1/images/system_avatar/logo.png',
+				src: 'https://api.petflash.cn/api/v1/images/system_avatar/logo.png',
 				userType: this.$store.getters.userInfo.user_type,
 			}
 		},
