@@ -8,44 +8,89 @@
 			<view>
 				<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 					<view class="page-box" v-if="current === 0">
+						<view class="cu-bar tabbar bg-black shadow">
+							<view class="action" @click="show = true">
+								<view>
+									<FontAwesome type="fas fa-receipt" size="40" fw :class="'text-gray'"></FontAwesome>
+								</view>
+								<u-picker
+									mode="region" 
+									v-model="show" 
+									@confirm="regionSelect"
+									:area-code='["31", "3101", "310101"]' 
+									:params="params"
+									></u-picker>
+								<view class="bar-icon" :class="'text-gray'">{{ region != "" ? region : "地区选择" }}</view>
+							</view>
+							<view class="action" @click="regionReset">
+								<view>
+									<FontAwesome type="fas fa-user-circle" size="40" fw :class="activeItem === 2? 'text-green': 'text-gray'"></FontAwesome>
+								</view>
+								<view class="bar-icon" :class="'text-gray'">显示全部</view>
+							</view>
+						</view>
+						
 						<view v-if="orderList[0].length > 0">
 							<view class="order" v-for="res in orderList[0]" :key="res.id">
 								<view class="top">
 									<view class="left">
-										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - ({{res.goodsList[0].pethouse.region }}) {{res.goodsList[0].pethouse.location }}</view>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}}({{res.goodsList[0].pethouse.region }})</view>
 									</view>
-									<view class="right">										
-										<text class="worker-info" 
+									<view class="right"										
 										@click="GetPetHouseAbstract(res.goodsList[0].pethouse.nickName, res.goodsList[0].pethouse.favor,
 										res.goodsList[0].pethouse.location, res.goodsList[0].pethouse.phone, res.goodsList[0].pethouse.isVerified,res.goodsList[0].pethouse.isCertifiedHouse)">
-										门店简介</text>
+										<u-icon name="home"></u-icon>
+										门店简介
 									</view>
 								</view>
-								<view class="item">
-									<view class="content">
-										<view class="title u-line-2">{{ res.goodsList[0].title }}</view>
-										<view class="delivery-time"> 时段: {{ res.goodsList[0].deliveryTime }} ~ {{ res.goodsList[0].deliveryTime }}</view>
-									</view>
-								</view>
-								<text>\n</text>
 								
-								<view class="total">
-									<text>
-										<text v-if="res.goodsList[0].basic > 0">
-										底薪:\t
-										<text class="total-price" space="ensp">
-										￥{{ res.goodsList[0].basic }}
-										</text>
-										</text>
-										<text v-if="res.goodsList[0].commission > 0">
-										\t提成:\t
-										<text class="total-price">
-											{{ res.goodsList[0].commission }}%
-										</text>
-										</text>
-									</text>
-								</view>
+								<u-row>
+									<u-col span="8">
+										<view class="item">
+											<view class="content">
+												<view class="start-time">
+													<text>\t</text> 
+													{{ res.goodsList[0].title }}
+												</view>
+												<text>\n</text>
+												
+												<view class="start-time">
+													<u-button shape="circle" slot="center" :type="'success'" size="mini">开始时间</u-button>
+													<text>\t</text>
+													{{ res.goodsList[0].startTime }}
+												</view>
+												
+												<view class="finish-time"> 
+													<u-button shape="circle" slot="center" :type="'error'" size="mini">结束时间</u-button>
+													<text>\t</text>
+													{{ res.goodsList[0].deliveryTime }}
+												</view>
+											</view>
+										</view>
+									</u-col>	
+									<u-col span="4">
+										<view class="total">
+											<text>												
+												<text v-if="res.goodsList[0].basic > 0">
+												底薪:\t
+												<text class="total-price" space="ensp">
+												{{ res.goodsList[0].basic }}
+												</text>
+												元
+												</text>
+												\n
+												<text v-if="res.goodsList[0].commission > 0">
+												\t提成:\t
+												<text class="total-price">
+													{{ res.goodsList[0].commission }}
+												</text>
+												%
+												</text>
+											</text>
+										</view>
+									</u-col>
+								</u-row>
+							
 								<view class="bottom">
 									<view class="more">
 									</view>
@@ -66,72 +111,80 @@
 									</view>
 								</view>
 							</view>
-						</view>
-						<view class="cu-bar tabbar bg-white shadow foot">
-							<view class="action">
-								<view>
-									<FontAwesome type="fas fa-receipt" size="40" fw :class="'text-gray'"></FontAwesome>
-								</view>
-								<u-picker
-									mode="region" 
-									v-model="show" 
-									@confirm="regionSelect"
-									:area-code='["31", "3101", "310101"]' 
-									:params="params"
-									></u-picker>
-								<view class="bar-icon" :class="'text-gray'" @click="show = true">{{ region != "" ? region : "地区选择" }}</view>
-							</view>
-							<view class="action">
-								<view>
-									<FontAwesome type="fas fa-user-circle" size="40" fw :class="activeItem === 2? 'text-green': 'text-gray'"></FontAwesome>
-								</view>
-								<view class="bar-icon" :class="'text-gray'" @click="regionReset">显示全部</view>
-							</view>
-						</view>
+						</view>			
 					</view>
 					<view class="page-box" v-if="current === 1">
 						<view v-if="orderList[1].length > 0">
-							<view class="order" v-for="res in orderList[1]" :key="res.id">
+							<view class="order" v-for="res in orderList[1]" :key="res.id">								
 								<view class="top">
 									<view class="left">
-										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - {{res.goodsList[0].pethouse.location }}</view>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}}({{res.goodsList[0].pethouse.region }})</view>
 									</view>
-									<view class="right">										
-										<text class="worker-info" 
+									<view class="right"
 										@click="GetPetHouseAbstract(res.goodsList[0].pethouse.nickName, res.goodsList[0].pethouse.favor,
 										res.goodsList[0].pethouse.location, res.goodsList[0].pethouse.phone, res.goodsList[0].pethouse.isVerified,res.goodsList[0].pethouse.isCertifiedHouse)">
-										门店简介</text>
+										<u-icon name="home"></u-icon>
+										门店简介
 									</view>
 								</view>
-								<view class="item">
-									<view class="content">
-										<view class="title u-line-2">{{ res.goodsList[0].title }}</view>
-										<view class="delivery-time">{{ res.goodsList[0].deliveryTime }} ~ {{ res.goodsList[0].deliveryTime }}</view>
-										<view class="delivery-time">接单时间 {{ res.goodsList[0].matchTime }}</view>
-										<text>\n</text>
-										<text class="delivery-time">接单10分钟内可免责取消</text>
-									</view>
-								</view>
-								<view class="total">
-									<text>
-										<text v-if="res.goodsList[0].basic > 0">
-										底薪:\t
-										<text class="total-price" space="ensp">
-										￥{{ res.goodsList[0].basic }}
-										</text>
-										</text>
-										<text v-if="res.goodsList[0].commission > 0">
-										\t提成:\t
-										<text class="total-price">
-											{{ res.goodsList[0].commission }}%
-										</text>
-										</text>
-									</text>
-								</view>
+								
+								<u-row>
+									<u-col span="8">
+										<view class="item">
+											<view class="content">
+												<view class="start-time">
+													<text>\t</text> 
+													{{ res.goodsList[0].title }}
+												</view>
+												<text>\n</text>
+												
+												<view class="start-time">
+													<u-button shape="circle" slot="center" :type="'success'" size="mini">开始时间</u-button>
+													<text>\t</text>
+													{{ res.goodsList[0].startTime }}
+												</view>
+												<view class="finish-time"> 
+													<u-button shape="circle" slot="center" :type="'error'" size="mini">结束时间</u-button>
+													<text>\t</text>
+													{{ res.goodsList[0].deliveryTime }}
+												</view>
+												<view class="match-time">
+													<u-button shape="square" slot="center" :type="'primary'" size="mini">接单时间</u-button>
+													<text>\t</text>
+													{{ res.goodsList[0].matchTime }}
+													<view>
+														<text style="font-size: 22rpx; color: #C0C0C0;">\t接单10分钟内可以无责任取消</text>
+													</view>
+												</view>		
+											</view>
+										</view>
+									</u-col>
+									<u-col span="4">
+										<view class="total">
+											<text>												
+												<text v-if="res.goodsList[0].basic > 0">
+												底薪:\t
+												<text class="total-price" space="ensp">
+												{{ res.goodsList[0].basic }}
+												</text>
+												元
+												</text>
+												\n
+												<text v-if="res.goodsList[0].commission > 0">
+												\t提成:\t
+												<text class="total-price">
+													{{ res.goodsList[0].commission }}
+												</text>
+												%
+												</text>
+											</text>
+										</view>
+									</u-col>
+								</u-row>
+
 								<view class="bottom">
 									<view class="evaluate btn" @click="CancelRunningOrder(res.id, res.goodsList[0].matchTime)">取消订单</view>
-									<view class="exchange btn">完成后店主确认</view>
+									<view class="exchange btn">由店主确认完成</view>
 								</view>
 							</view>
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
@@ -153,31 +206,54 @@
 					</view>
 					<view class="page-box" v-if="current === 2">
 						<view v-if="orderList[2].length > 0">
-							<view class="order" v-for="res in orderList[2]" :key="res.id">
+							<view class="order" v-for="res in orderList[2]" :key="res.id">								
 								<view class="top">
 									<view class="left">
-										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
-										<view class="store">{{ res.goodsList[0].pethouse.nickName}} - {{res.goodsList[0].pethouse.location }}</view>
+										<view class="store">{{ res.goodsList[0].pethouse.nickName}}({{res.goodsList[0].pethouse.region }})</view>
 									</view>
-									<view class="right">										
-										<text class="worker-info" 
+									<view class="right"
 										@click="GetPetHouseAbstract(res.goodsList[0].pethouse.nickName, res.goodsList[0].pethouse.favor,
 										res.goodsList[0].pethouse.location, res.goodsList[0].pethouse.phone, res.goodsList[0].pethouse.isVerified,res.goodsList[0].pethouse.isCertifiedHouse)">
-										门店简介</text>
+										<u-icon name="home"></u-icon>
+										门店简介
 									</view>
 								</view>
-								<view class="item">
-									<view class="content">
-										<view class="title u-line-2">{{ res.goodsList[0].title }}</view>
-										<view class="delivery-time">{{ res.goodsList[0].startTime }} ~ {{ res.goodsList[0].deliveryTime }}</view>
-									</view>
-								</view>
-								<view class="total">
-									合计:
-									<text class="total-price">
-										￥{{ res.goodsList[0].totalPay }}
-									</text>
-								</view>
+								
+								<u-row>
+									<u-col span="8">
+										<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+											<view class="content">
+												<view class="start-time">
+													<text>\t</text> 
+													{{ item.title }}
+												</view>
+												<text>\n</text>
+
+												<view class="start-time"> 
+													<u-button shape="circle" slot="center" :type="'success'" size="mini">开始时间</u-button>
+													<text>\t</text>
+													{{ item.startTime }}
+												</view>
+												
+												<view class="finish-time"> 
+													<u-button shape="circle" slot="center" :type="'error'" size="mini">结束时间</u-button>
+													<text>\t</text>
+													{{ item.deliveryTime }}
+												</view>										
+											</view>
+										</view>
+									</u-col>
+									
+									<u-col span="4">
+										<view class="total" style="margin-top: 60rpx;">
+											合计:
+											<text class="total-price">
+												￥{{ res.goodsList[0].totalPay }}
+											</text>
+										</view>
+									</u-col>
+								</u-row>
+
 								<view class="bottom">
 									<view class="more">
 									</view>
@@ -192,18 +268,18 @@
 							<u-loadmore v-show="pageInfo.page < pageInfo.total_pages" :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
 						</view>
 						<view v-else>
-								<view class="page-box">
-									<view>
-										<view class="centre">
-											<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
-											<view class="explain">
-												您还没有相关的订单
-												<view class="tips">马上去招募美容师</view>
-											</view>
-											<view class="btn" @click="releaseOrder">去下单</view>
+							<view class="page-box">
+								<view>
+									<view class="centre">
+										<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode=""></image>
+										<view class="explain">
+											您还没有相关的订单
+											<view class="tips">马上去招募美容师</view>
 										</view>
+										<view class="btn" @click="releaseOrder">去下单</view>
 									</view>
 								</view>
+							</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -298,7 +374,7 @@
 					// 说明service items 为空，为普通订单
 					strs.push(order.orderServices[0])
 				}
-				return strs.join("/")
+				return strs.join("、")
 			},
 			
 			generateQueryParam(status) {
@@ -412,7 +488,7 @@
 								deal: order.orderStatus[list.status],
 								goodsList: [{
 									goodsUrl: '//127.0.0.1:8080/api/v1/images/imagetest',
-									title: this.serviceIdToStr(list.service_items),
+									title: this.serviceIdToStr(list.parent.requirement_order.service_items),
 									status: order.orderStatus[list.status],
 									startTime: moment(new Date(list.parent.requirement_order.started_at)).format('YYYY-MM-DD HH:mm'),
 									deliveryTime: moment(new Date(list.parent.requirement_order.finished_at)).format('YYYY-MM-DD HH:mm'),
@@ -606,7 +682,7 @@
 
 				.store {
 					margin: 0 10rpx;
-					font-size: 32rpx;
+					font-size: 28rpx;
 					font-weight: bold;
 				}
 			}
@@ -641,9 +717,19 @@
 					font-size: 24rpx;
 					color: $u-tips-color;
 				}
-
-				.delivery-time {
-					color: #e5d001;
+				
+				.start-time {
+					color: #c0c0c0;
+					font-size: 24rpx;
+				}
+				
+				.finish-time {
+					color: #292421;
+					font-size: 24rpx;
+				}
+				
+				.match-time {
+					color: #292421;
 					font-size: 24rpx;
 				}
 				
@@ -671,12 +757,13 @@
 		}
 
 		.total {
-			margin-top: 20rpx;
+			margin-top: 80rpx;
 			text-align: right;
 			font-size: 24rpx;
 
 			.total-price {
-				font-size: 32rpx;
+				font-size: 30rpx;
+				color: #ff9912;
 			}
 		}
 

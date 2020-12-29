@@ -111,12 +111,12 @@
 												<view><text>\n</text></view>
 												
 												<view class="finish-time">
-												<u-button shape="square" slot="center" :type="'primary'" size="mini">接单时间</u-button>
-												<text>\t</text>
-												{{ item.matchTime }}
-												<view>
-													<text style="font-size: 22rpx; color: #C0C0C0;">\t接单10分钟内可以无责任取消</text>
-												</view>
+													<u-button shape="square" slot="center" :type="'primary'" size="mini">接单时间</u-button>
+													<text>\t</text>
+													{{ item.matchTime }}
+													<view>
+														<text style="font-size: 22rpx; color: #C0C0C0;">\t接单10分钟内可以无责任取消</text>
+													</view>
 												</view>													
 											</view>
 										</view>

@@ -68,7 +68,7 @@
 			<u-checkbox @change="checkboxChange" v-model="item.checked" v-for="(item, index) in checkBoxList" :key="index" :name="item.name">{{item.name}}</u-checkbox>
 		</u-checkbox-group>
 		-->
-		<u-button type="primary" @click="submit">提交</u-button>
+		<u-button type="warning" @click="submit">提交</u-button>
 	</view>
 </template>
 

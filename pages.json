@@ -63,7 +63,7 @@
             "path" : "pages/groomer/certification_verify/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "个人资质上传",
+                "navigationBarTitleText": "个人资质",
                 "enablePullDownRefresh": false
             }
             
@@ -81,7 +81,7 @@
             "path" : "pages/groomer/abstract/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "人员信息",
+                "navigationBarTitleText": "人员简介",
                 "enablePullDownRefresh": false
             }
             
@@ -108,7 +108,7 @@
             "path" : "pages/pethouse/license_verify/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "门店信息上传",
+                "navigationBarTitleText": "门店信息",
                 "enablePullDownRefresh": false
             }
             
@@ -117,7 +117,7 @@
             "path" : "pages/groomer/home/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "个人版",
                 "enablePullDownRefresh": false
             }
             
@@ -135,7 +135,7 @@
             "path" : "pages/groomer/info/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "昵称填写",
                 "enablePullDownRefresh": false
             }
             
@@ -144,7 +144,7 @@
             "path" : "pages/groomer/order_history/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "订单",
                 "enablePullDownRefresh": false
             }
             
@@ -153,7 +153,7 @@
             "path" : "pages/pethouse/abstract/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "门店简介",
                 "enablePullDownRefresh": false
             }
             

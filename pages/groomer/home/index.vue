@@ -1,6 +1,9 @@
 <template>
 	<view>
-		<view class="cu-bar tabbar bg-white shadow foot">
+		<view class="release-order-conntainer">
+			<button class="release-order-btn" type="default" style="background-color: #ffbd59;" @click="handleReceive">我要接单</button>
+		</view>
+		<view class="cu-bar tabbar bg-black shadow foot">
 			<view class="action" @click="handleNavClick(1)">
 				<view>
 					<FontAwesome type="fas fa-receipt" size="40" fw :class="'text-gray'"></FontAwesome>
@@ -9,9 +12,9 @@
 			</view>
 			<view class="action" @click="handleNavClick(2)">
 				<view>
-					<FontAwesome type="fas fa-user-circle" size="40" fw :class="activeItem === 2? 'text-green': 'text-gray'"></FontAwesome>
+					<FontAwesome type="fas fa-user-circle" size="40" fw :class="'text-gray'"></FontAwesome>
 				</view>
-				<view class="bar-icon" :class="activeItem === 2? 'text-green': 'text-gray'">我的</view>
+				<view class="bar-icon" :class="'text-gray'">我的</view>
 			</view>
 		</view>
 	</view>
@@ -59,9 +62,9 @@
 				}
 				this.activeItem = command
 			},
-			handleRelease: function(e) {
+			handleReceive: function(e) {
 				uni.navigateTo({
-					url: "../release_orders/index",
+					url: "../order_history/index?current=0",
 					success: () => {
 						console.log("jump order release success")
 					},
@@ -90,7 +93,7 @@
 	}
 
 	.release-order-btn {
-		margin-top: 25vh;
+		margin-top: 30vh;
 		height: 12vh;
 		width: 50vw;
 		line-height: 12vh;

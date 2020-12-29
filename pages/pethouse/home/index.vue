@@ -4,14 +4,6 @@
 			<button class="release-order-btn" type="default" style="background-color: #ffbd59;" @click="handleRelease">我要派单</button>
 		</view>
 		<view class="cu-bar tabbar bg-black shadow foot">
-			<!--
-			<view class="action" @click="handleNavClick(0)">
-				<view>
-					<FontAwesome type="fas fa-plus" size="40" fw :class="activeItem === 0? 'text-green': 'text-gray'"></FontAwesome>
-				</view>
-				<view class="bar-icon" :class="activeItem === 0? 'text-green': 'text-gray'">派单</view>
-			</view>
-			-->
 			<view class="action" @click="handleNavClick(1)">
 				<view>
 					<FontAwesome type="fas fa-receipt" size="40" fw :class="'text-gray'"></FontAwesome>

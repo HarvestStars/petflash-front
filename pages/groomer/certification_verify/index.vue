@@ -1,29 +1,31 @@
 <template>
-	<view style="background-color: rgb(248, 248, 248); padding: 14px;">
-		<view style="background-color: rgb(255, 255, 255);">
-			<view>
+	<view class="wrap">
+		<u-form ref="uForm" label-width="180">
+			<u-form-item label="资质选择" >
+				<u-input placeholder="选择您的专业资质" v-model="quaStr" type="select" input-align="right" @click="show = true" />
 				<u-select v-model="show" :list="levelList" @confirm="confirm"></u-select>
-				<u-button @click="show = true">专业资质</u-button>
-			</view>
-			<u-field v-model="quaStr" label="专业资质" placeholder="请输入(如,助理级,C,B,A...)">
-			</u-field>
-		</view>
-		<view v-if="frontPrefix">
-			<view class="img-upload">
-				<u-upload ref="uUpload-Permiss" max-count="1" @on-success="uploadPermissSuccess" :header="uploadHeader" 
-				upload-text="资质证书" name="certifi_front" :action="action" :auto-upload="true" 
-				:file-list="certifiFrontList" 
-				width="630rpx"></u-upload>
-			</view>
-		</view>
-		<view v-else>
-			<view class="img-upload">
-				<u-upload ref="uUpload-Permiss" max-count="1" @on-success="uploadPermissSuccess" :header="uploadHeader" 
-				upload-text="资质证书" name="certifi_front" :action="action" :auto-upload="true"
-				width="630rpx"></u-upload>
-			</view>
-		</view>
-		<u-button type="primary" @click="submit">认证信息</u-button>
+			</u-form-item>
+			
+			<u-form-item>
+				<view v-if="frontPrefix">
+					<view class="img-upload">
+						<u-upload ref="uUpload-Permiss" max-count="1" @on-success="uploadPermissSuccess" :header="uploadHeader" 
+						upload-text="资质证书(美助为选填)" name="certifi_front" :action="action" :auto-upload="true" 
+						:file-list="certifiFrontList" 
+						width="630rpx"></u-upload>
+					</view>
+				</view>
+				<view v-else>
+					<view class="img-upload">
+						<u-upload ref="uUpload-Permiss" max-count="1" @on-success="uploadPermissSuccess" :header="uploadHeader" 
+						upload-text="资质证书(美助为选填)" name="certifi_front" :action="action" :auto-upload="true"
+						width="630rpx"></u-upload>
+					</view>
+				</view>
+			</u-form-item>
+			<text>\n</text>
+			<u-button type="warning" @click="submit">提交认证</u-button>
+		</u-form>
 	</view>
 </template>
 
@@ -142,5 +144,11 @@
 	.img-upload {
 		padding: 12rpx;
 		background-color: rgb(255, 255, 255);
+	}
+	
+	.wrap {
+		padding: 30rpx;
+		font-size: 30rpx;
+		background-color: #FFFFFF;
 	}
 </style>

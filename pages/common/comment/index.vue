@@ -1,14 +1,23 @@
 <template>
-	<u-form :model="form" ref="uForm">
-		<u-form-item :label="objLabel"><u-input placeholder="评价今后会以匿名的形式显示在ta的主页" v-model="form.content" /></u-form-item>
-		<u-rate :count="maxStars" v-model="favor"></u-rate>
-		<view v-if="form.content === null">
-			<u-button shape="circle">发送评论</u-button>
-		</view>
-		<view v-else>
-			<u-button shape="circle" type="warning" @click="confirm">发送评论</u-button>
-		</view>
-	</u-form>
+	<view class="wrap">
+		<u-form :model="form" ref="uForm" label-width="180">
+			<u-form-item label="满意度">
+				<view class="item-right"></view>
+				<u-rate :count="maxStars" v-model="favor" active-icon="heart-fill" inactive-icon="heart"></u-rate>
+			</u-form-item>
+			<u-form-item :label="objLabel">
+				<u-input placeholder="今后会以匿名的形式显示在Ta的主页" v-model="form.content" input-align="left" />
+			</u-form-item>
+			
+			<text>\n</text>
+			<view v-if="form.content === null">
+				<u-button shape="square" style="color: #C0C0C0;">请填写评论后发送</u-button>
+			</view>
+			<view v-else>
+				<u-button shape="square" type="warning" @click="confirm">发送评论</u-button>
+			</view>
+		</u-form>
+	</view>
 </template>
 
 <script>
@@ -30,9 +39,9 @@
 			this.orderID = parseInt(option.order_id);
 			this.commentType = option.comment_type;
 			if (this.commentType === "ToPetHouseOrder"){
-				this.objLabel = "对该门店的评价"
+				this.objLabel = "对Ta的评价"
 			}else{
-				this.objLabel = "对该兼职的评价"
+				this.objLabel = "对Ta的评价"
 			}
 		},
 		methods: {			
@@ -68,5 +77,12 @@
 </script>
 
 <style>
-
+	.wrap {
+		padding: 30rpx;
+		background-color: #FFFFFF;
+	}
+	
+	.item-right {
+		padding: 0 150rpx;
+	}
 </style>

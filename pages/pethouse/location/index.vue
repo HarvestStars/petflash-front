@@ -38,12 +38,12 @@
 					area: true
 				},
 				
-				nick_name: `${this.$store.getters.userInfo.nick_name}`,
+				nick_name: this.$store.getters.userInfo.nick_name? this.$store.getters.userInfo.nick_name : "",
 				show: false,
-				input: `${this.$store.getters.userInfo.city} - ${this.$store.getters.userInfo.region}`,
+				input: this.$store.getters.userInfo.city ? `${this.$store.getters.userInfo.city} - ${this.$store.getters.userInfo.region}` : "",
 				city: `${this.$store.getters.userInfo.city}`,
 				region: `${this.$store.getters.userInfo.region}`,
-				address: `${this.$store.getters.userInfo.location}`
+				address: this.$store.getters.userInfo.location ? this.$store.getters.userInfo.location : ""
 			}
 		},
 		computed: {

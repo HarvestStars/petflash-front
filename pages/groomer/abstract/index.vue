@@ -49,7 +49,8 @@
 			return {
 				nickName :"",
 				favor: "暂无得分",
-				avartarURL: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
+				/*'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg'*/
+				avartarURL: 'http://127.0.0.1:8080/api/v1/images/system_avatar/logo.png',
 				isVerified: true,
 				isCertified: false,
 				qualification: "未知",
