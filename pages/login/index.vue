@@ -43,6 +43,10 @@
 			<view>
 				<button class="login-btn" @click="handleLogin">登录</button>
 			</view>
+			<text>\n</text>
+			<view class="guest" @click="guestLogin">
+				游客登录(个人版)
+			</view>
 		</form>
 	</view>
 </template>
@@ -194,6 +198,14 @@
 			resetVerifyCodeField: function(e) {
 				utils.removeElement(this.verifyCodeClass, this.validatePassClass)
 			},
+			
+			guestLogin: function(e){
+				console.log("guestLogin")
+				uni.redirectTo({
+					url: "../groomer/home/index"
+				})
+			},
+			
 			handleLogin: function(e) {
 				console.log("handleLogin", this.loginForm)
 				const validatePhoneNumberResult = utils.validatePhoneNumber(this.loginForm.phoneNumber)
@@ -253,6 +265,14 @@
 </script>
 
 <style>
+	.guest{
+		text-decoration: underline;
+		vertical-align: middle;
+		text-align: center;
+		font-size: 20rpx;
+		color: #999999;
+	}
+	
 	.cu-form-group .title {
 		width: 38px;
 		height: 38px;

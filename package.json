@@ -19,5 +19,6 @@
   "homepage": "https://github.com/HarvestStars/petflash-front#readme",
   "dependencies": {
     "moment": "^2.29.1"
-  }
+  },
+  "devDependencies": {}
 }

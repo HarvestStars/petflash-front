@@ -89,8 +89,8 @@
 					startTime: "",
 					endTime: "",
 					payWay: 0,
-					basePay: 0.0,
-					deductPercentage: 0,
+					basePay: "",
+					deductPercentage: "",
 					pickUpWay: '',
 					pickUpWayIndex: '',
 					getOnTime: '',
@@ -222,8 +222,8 @@
 				})
 			},
 			radioGroupChange(index) {
-				this.orderForm.deductPercentage = 0
-				this.orderForm.basePay = 0
+				this.orderForm.deductPercentage = ""
+				this.orderForm.basePay = ""
 				console.log("radioGroupChange", index, this.orderForm.payWay)
 			},
 			checkboxGroupChange(e) {
@@ -248,8 +248,8 @@
 					},
 					data: {
 						requested_at: moment.now(),
-						started_at: moment(new Date(this.orderForm.startTime)).utc().valueOf(),
-						finished_at: moment(new Date(this.orderForm.endTime)).utc().valueOf(),
+						started_at: moment(this.orderForm.startTime).utc().valueOf(),
+						finished_at: moment(this.orderForm.endTime).utc().valueOf(),
 						service_items: this.serviceItems,
 						basic: parseFloat(this.orderForm.basePay.valueOf()),
 						commission: parseInt(this.orderForm.deductPercentage.valueOf()),

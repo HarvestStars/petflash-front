@@ -66,7 +66,6 @@
 						console.log(data.data, this.$store)
 						if (data.code === 0) {
 							let userInfo = Object.assign(this.$store.getters.userInfo, data.data.user_info)
-							//this.$store.dispatch("user/updateUserInfo", userInfo)
 							this.$store.dispatch("user/setToken", data.data.token)
 							if (role === "PetHouse"){
 								let userInfoWithNewType = Object.assign(userInfo, {
